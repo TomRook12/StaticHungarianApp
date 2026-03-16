@@ -378,6 +378,93 @@
     margin-left: 4px;
   }
 
+  /* ADVANCED SENTENCES */
+  .advanced-box {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px 18px;
+    margin-top: 16px;
+  }
+  .advanced-box .adv-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .advanced-sentence {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .advanced-sentence:last-child { border-bottom: none; }
+  .advanced-sentence .hu {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .advanced-sentence .en {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ROLEPLAY BOX */
+  .roleplay-box {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 3px;
+    padding: 18px 20px;
+    margin-top: 16px;
+  }
+  .roleplay-box .rp-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    font-weight: 500;
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
+  .rp-scene {
+    font-size: 12px;
+    color: rgba(245,240,232,0.55);
+    font-style: italic;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .rp-line {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .rp-line:last-child { border-bottom: none; }
+  .rp-speaker {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    padding-top: 2px;
+    font-weight: 500;
+  }
+  .rp-speaker.you { color: #E8B89A; }
+  .rp-text { color: var(--cream); }
+  .rp-text .rp-en {
+    display: block;
+    font-size: 11px;
+    color: rgba(245,240,232,0.4);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
   /* FOOTER NOTE */
   .footer-note {
     margin-top: 48px;
@@ -394,6 +481,379 @@
     .phrase-table td:nth-child(2) { display: none; }
     .phrase-table td:last-child { display: none; }
   }
+
+  /* ── QUIZ TRIGGER BUTTON ── */
+  .quiz-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 14px 20px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .quiz-trigger:hover { background: #2E2416; }
+  .quiz-trigger:active { transform: scale(0.99); }
+  .quiz-trigger .qt-icon { font-size: 18px; }
+  .quiz-trigger .qt-label { flex: 1; text-align: left; }
+  .quiz-trigger .qt-badge {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  /* ── QUIZ OVERLAY ── */
+  #quiz-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 500;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #quiz-overlay.active { display: flex; }
+
+  .quiz-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 24px;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .quiz-back {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.15s;
+  }
+  .quiz-back:hover { color: var(--ink); }
+  .quiz-title-bar {
+    flex: 1;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .quiz-counter {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* PROGRESS BAR */
+  .quiz-progress-track {
+    height: 3px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  /* QUIZ BODY */
+  .quiz-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px 48px;
+    max-width: 540px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .quiz-prompt-label {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .quiz-word {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 8vw, 56px);
+    font-weight: 400;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+  .quiz-pronunciation {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  /* 2×2 GRID */
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-width: 400px;
+  }
+  .quiz-tile {
+    background: var(--warm-white);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 12px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    user-select: none;
+    min-height: 110px;
+  }
+  .quiz-tile:hover:not(.locked) {
+    border-color: rgba(26,18,8,0.3);
+    transform: translateY(-2px);
+  }
+  .quiz-tile:active:not(.locked) { transform: scale(0.97); }
+  .quiz-tile .tile-emoji { font-size: 36px; line-height: 1; }
+  .quiz-tile .tile-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* Feedback states */
+  .quiz-tile.correct {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+  .quiz-tile.correct .tile-label { color: var(--green); font-weight: 500; }
+  .quiz-tile.wrong {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    opacity: 0.7;
+  }
+  .quiz-tile.wrong .tile-label { color: var(--accent); }
+  .quiz-tile.locked { cursor: default; pointer-events: none; }
+  .quiz-tile.highlight-correct {
+    border-color: var(--green);
+    background: var(--green-light);
+    animation: pulse-correct 0.5s ease;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  @keyframes pulse-correct {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  /* Feedback message */
+  .quiz-feedback {
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 20px;
+    text-align: center;
+    transition: opacity 0.2s;
+  }
+  .quiz-feedback.good { color: var(--green); }
+  .quiz-feedback.bad  { color: var(--accent); }
+
+  /* ── COMPLETION SCREEN ── */
+  #quiz-complete {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 32px 24px;
+    text-align: center;
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  #quiz-complete.active { display: flex; }
+  .complete-icon { font-size: 56px; margin-bottom: 20px; }
+  .complete-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .complete-score span { color: var(--accent); }
+  .complete-label {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 28px;
+  }
+  .complete-message {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 320px;
+  }
+  .complete-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .btn-retry {
+    padding: 13px 20px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-retry:hover { background: #2E2416; }
+  .btn-back-lesson {
+    padding: 13px 20px;
+    background: none;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .btn-back-lesson:hover { color: var(--ink); border-color: rgba(26,18,8,0.3); }
+
+  @media (max-width: 600px) {
+    .quiz-body { padding: 24px 16px 32px; }
+    .quiz-tile { min-height: 90px; padding: 18px 10px 14px; }
+    .quiz-tile .tile-emoji { font-size: 28px; }
+  }
+
+  /* ── QUESTION TYPE PILL ── */
+  .question-type-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .pill-picker   { background: var(--blue-light);  color: var(--blue); }
+  .pill-sentence { background: var(--gold-light);  color: var(--gold); }
+
+  /* ── SENTENCE BUILDER ── */
+  .sb-sentence-display {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: 400;
+    color: var(--ink);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    min-height: 48px;
+  }
+  .sb-translation {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .sb-blank {
+    display: inline-block;
+    min-width: 90px;
+    border-bottom: 2.5px solid var(--ink);
+    vertical-align: bottom;
+    text-align: center;
+    padding: 0 6px 2px;
+    margin: 0 4px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--accent);
+    transition: border-color 0.2s, color 0.2s;
+    line-height: 1.4;
+  }
+  .sb-blank.filled        { border-color: var(--ink); color: var(--ink); }
+  .sb-blank.correct-fill  { border-color: var(--green); color: var(--green); }
+  .sb-blank.wrong-fill    { border-color: var(--accent); color: var(--accent); }
+
+  /* Word pool */
+  .sb-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    max-width: 420px;
+    width: 100%;
+  }
+  .sb-chip {
+    background: var(--warm-white);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    user-select: none;
+  }
+  .sb-chip:hover:not(.used):not(.locked) {
+    border-color: rgba(26,18,8,0.35);
+    transform: translateY(-2px);
+  }
+  .sb-chip:active:not(.used):not(.locked) { transform: scale(0.96); }
+  .sb-chip.used    { opacity: 0.3; pointer-events: none; }
+  .sb-chip.locked  { pointer-events: none; }
+  .sb-chip.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .sb-chip.wrong   { border-color: var(--accent); background: var(--accent-light); color: var(--accent); opacity: 0.6; }
+  .sb-chip.highlight-chip {
+    border-color: var(--green);
+    background: var(--green-light);
+    color: var(--green);
+    animation: pulse-correct 0.45s ease;
+    pointer-events: auto;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -405,13 +865,13 @@
 </header>
 
 <nav>
-  <button class="active" onclick="showTab('overview', this)">Overview</button>
-  <button onclick="showTab('out', this)">🚶 Out &amp; About</button>
-  <button onclick="showTab('play', this)">🧩 Playing at Home</button>
-  <button onclick="showTab('food', this)">🍽️ Food</button>
-  <button onclick="showTab('ready', this)">👕 Getting Ready</button>
-  <button onclick="showTab('read', this)">📖 Reading</button>
-  <button onclick="showTab('day', this)">💬 How Was Your Day?</button>
+  <button class="active" onclick="showTab('overview')">Overview</button>
+  <button onclick="showTab('out')">🚶 Out & About</button>
+  <button onclick="showTab('play')">🧩 Playing at Home</button>
+  <button onclick="showTab('food')">🍽️ Food</button>
+  <button onclick="showTab('ready')">👕 Getting Ready</button>
+  <button onclick="showTab('read')">📖 Reading</button>
+  <button onclick="showTab('day')">💬 How Was Your Day?</button>
 </nav>
 
 <main>
@@ -547,6 +1007,53 @@
       <div class="tip-box">
         <strong>Pattern notice:</strong> "-ba / -be" at the end of a place means "into/to" that place. You don't need to know the grammar rule — just notice that park → parkba, bolt → boltba. Your brain will absorb the pattern through repetition.
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Siess, menjünk, már késő van!</span>
+          <span class="en">Hurry up, let's go — it's already late!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Fogd a kezemet, mert most átmegyünk az úton.</span>
+          <span class="en">Hold my hand, because we're crossing the road now.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Megállj a sarkon, és várj meg engem!</span>
+          <span class="en">Stop at the corner and wait for me!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Nézz körbe — jön valami? Nem jön semmi. Átmehetünk.</span>
+          <span class="en">Look around — is anything coming? Nothing's coming. We can cross.</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Leaving the House</div>
+        <div class="rp-scene">You're about to leave for the park. Your child is dawdling. Play this out in real life as you head to the door.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Menjünk! A parkba megyünk.<span class="rp-en">Let's go! We're going to the park.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Hova megyünk?<span class="rp-en">Where are we going?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">A parkba! Gyere ide, fogd a kezemet.<span class="rp-en">To the park! Come here, hold my hand.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Megállj! Nézz körbe. … Átmehetünk.<span class="rp-en">Stop! Look around. … We can cross.</span></span>
+        </div>
+      </div>
+
+      <button class="quiz-trigger" onclick="openQuiz('01')">
+        <span class="qt-icon">🧠</span>
+        <span class="qt-label">Test Yourself — Lesson 01</span>
+        <span class="qt-badge">11 questions</span>
+      </button>
     </div>
   </div>
 
@@ -584,6 +1091,53 @@
           Narrate what's happening as it happens. When your child goes on the slide: "Csússz le!" When they want more: wait for them to say "Még egyszer!" (model it first a few visits). You say "Én tolom!" before you push the swing every single time — repetition is the method.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Én tolom, de aztán te jössz!</span>
+          <span class="en">I'll push you, but then it's your turn!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Vigyázz, mert le fogsz esni!</span>
+          <span class="en">Be careful, or you'll fall off!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Még egyszer, aztán menjünk haza, jó?</span>
+          <span class="en">One more time, then let's go home, okay?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Fáj? Nem baj, menj fel újra!</span>
+          <span class="en">Does it hurt? Never mind, climb up again!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — At the Swings</div>
+        <div class="rp-scene">Your child is on the swing. You're about to push. Play it out — use gestures freely.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Hintázzunk! Én tolom.<span class="rp-en">Let's swing! I'll push you.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Még egyszer!<span class="rp-en">One more time!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Elég? Vagy még egyszer?<span class="rp-en">Enough? Or one more time?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Rendben. Menjünk haza.<span class="rp-en">Alright. Let's go home.</span></span>
+        </div>
+      </div>
+
+      <button class="quiz-trigger" onclick="openQuiz('02')">
+        <span class="qt-icon">🧠</span>
+        <span class="qt-label">Test Yourself — Lesson 02</span>
+        <span class="qt-badge">11 questions</span>
+      </button>
     </div>
   </div>
 
@@ -620,6 +1174,53 @@
           Before going to sleep, point to your child's bookshelf: "Melyik könyvet akarod?" Let them point. You say "Ezt akarod?" and hand it over. During the book say "Mi ez?" pointing at pictures. This builds vocabulary from things they already love and know.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Csend legyen, mert mások is olvasnak itt.</span>
+          <span class="en">Let's be quiet, because other people are reading here too.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ezt a könyvet már olvastuk, emlékszel?</span>
+          <span class="en">We've already read this book — do you remember?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Keress egy könyvet, ami tetszik neked!</span>
+          <span class="en">Find a book that you like!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ezt hazavigyük, és este olvassuk el együtt.</span>
+          <span class="en">Let's take this one home and read it together tonight.</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Choosing at the Library</div>
+        <div class="rp-scene">You've arrived at the library. Your child is browsing the shelves. Keep voices low — model that too.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Csend legyen! Melyik könyvet akarod?<span class="rp-en">Let's be quiet! Which book do you want?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ezt akarom.<span class="rp-en">I want this one.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Tetszik? Jó. Olvassunk együtt!<span class="rp-en">Do you like it? Good. Let's read together!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Nézd meg! Mi ez?<span class="rp-en">Look at this! What's this?</span></span>
+        </div>
+      </div>
+
+      <button class="quiz-trigger" onclick="openQuiz('03')">
+        <span class="qt-icon">🧠</span>
+        <span class="qt-label">Test Yourself — Lesson 03</span>
+        <span class="qt-badge">11 questions</span>
+      </button>
     </div>
   </div>
 
@@ -652,6 +1253,53 @@
       <div class="tip-box">
         Use the feelings words every day at pickup — even if you just point at their face and ask "Boldog? Szomorú? Fáradt?" You're building emotional vocabulary which is how children first learn to express themselves.
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Hamarosan jövök érted — ne sírj, jól lesz!</span>
+          <span class="en">I'll come for you soon — don't cry, it'll be fine!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Milyen napod volt ma az iskolában?</span>
+          <span class="en">How was your day at school today?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Fáradt vagy? Gyere, menjünk haza, és pihenünk.</span>
+          <span class="en">Are you tired? Come on, let's go home and rest.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Boldog vagyok, hogy látlak — nagyon hiányoztál!</span>
+          <span class="en">I'm happy to see you — I missed you so much!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The School Pickup</div>
+        <div class="rp-scene">You've just arrived to collect your child. Act it out at the gate or door.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Szia! Gyere, menjünk haza!<span class="rp-en">Hi! Come on, let's go home!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Milyen napod volt?<span class="rp-en">How was your day?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Jó napom volt. / Fáradt vagyok.<span class="rp-en">I had a good day. / I'm tired.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Boldog vagyok, hogy látlak!<span class="rp-en">I'm happy to see you!</span></span>
+        </div>
+      </div>
+
+      <button class="quiz-trigger" onclick="openQuiz('04')">
+        <span class="qt-icon">🧠</span>
+        <span class="qt-label">Test Yourself — Lesson 04</span>
+        <span class="qt-badge">11 questions</span>
+      </button>
     </div>
   </div>
 
@@ -687,6 +1335,53 @@
           In the car or on the way, tell your child in Hungarian who you are visiting: "Nagyihoz megyünk!" or "Barátoddal játszol!" Make it exciting. When you arrive, you say "Szia!" first and model the greeting. Let them copy naturally — never force it.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Ma Nagyihoz megyünk — örülsz neki?</span>
+          <span class="en">We're going to Grandma's today — are you pleased?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Köszönj szépen Nagyinak — mondd: "Szia!"</span>
+          <span class="en">Say hello nicely to Grandma — say: "Hi!"</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ő a legjobb barátom, sokat játszunk együtt.</span>
+          <span class="en">He/She is my best friend — we play together a lot.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Örülök, hogy látlak — régen találkoztunk!</span>
+          <span class="en">I'm glad to see you — it's been a long time!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Arriving at Grandma's</div>
+        <div class="rp-scene">You're in the car on the way. Then you arrive. Act both parts out — your child can play "Nagyi" if they like.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Nagyihoz megyünk! Ki jön ma?<span class="rp-en">We're going to Grandma's! Who's coming today?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Nagyi!<span class="rp-en">Grandma!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Igen! Szia, Nagyi! Örülök, hogy látlak!<span class="rp-en">Yes! Hi Grandma! I'm glad to see you!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Hogy vagy? — Jól vagyok, köszönöm!<span class="rp-en">How are you? — I'm well, thank you!</span></span>
+        </div>
+      </div>
+
+      <button class="quiz-trigger" onclick="openQuiz('05')">
+        <span class="qt-icon">🧠</span>
+        <span class="qt-label">Test Yourself — Lesson 05</span>
+        <span class="qt-badge">11 questions</span>
+      </button>
     </div>
   </div>
 </div>
@@ -732,6 +1427,47 @@
           Pick up any toy and ask "Hogy hívják ezt?" Your child tells you the Hungarian. You repeat it. Then say "Ez egy [toy]!" together. Do 3–4 toys per session. Over a week you'll have 20+ toy words locked in — through the child's voice, not a list.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Hol van a piros autó? Ott van a polcon!</span>
+          <span class="en">Where's the red car? There it is on the shelf!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez egy nagy labda — és ez meg egy kicsi labda.</span>
+          <span class="en">This is a big ball — and this one is a small ball.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Hogy hívják ezt magyarul?</span>
+          <span class="en">What's this called in Hungarian?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Tedd el a babát, és hozd ide a kirakóst!</span>
+          <span class="en">Put the doll away and bring me the puzzle!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The Label Game Live</div>
+        <div class="rp-scene">Sit on the floor surrounded by a few toys. Pick them up one by one and play this out.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Hogy hívják ezt? (hold up a toy)<span class="rp-en">What's this called?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ez egy autó!<span class="rp-en">This is a car!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Igen! Ez egy autó. Hol van a labda?<span class="rp-en">Yes! This is a car. Where is the ball?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ott van!<span class="rp-en">There it is!</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -770,6 +1506,47 @@
           Every single time a turn changes in any game, say it out loud. "Te jössz!" when it's theirs, "Én jövök!" when it's yours. Say it every time for a week — it will become automatic. Then add "Fordítsd meg!" whenever a puzzle piece is wrong-way around.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Most én jövök — aztán te jössz, rendben?</span>
+          <span class="en">It's my turn now — then yours, okay?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Fordítsd meg — szerintem nem passzol így.</span>
+          <span class="en">Turn it around — I don't think it fits like that.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Jól csináltad! Próbáld meg a másikat!</span>
+          <span class="en">Well done! Try the other one!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ki nyert? Te nyertél — legközelebb én nyerek!</span>
+          <span class="en">Who won? You won — next time I'll win!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Playing a Board Game</div>
+        <div class="rp-scene">Set up any simple game. Play a few turns using only Hungarian for the turn announcements and reactions.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Én jövök! (take your turn) Megvan!<span class="rp-en">My turn! … Got it!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Te jössz!<span class="rp-en">Your turn!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Én nyertem!<span class="rp-en">I won!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Jól csináltad! Kezdjük újra?<span class="rp-en">Well done! Shall we start again?</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -801,6 +1578,47 @@
       </div>
       <div class="tip-box">
         <strong>Ownership words</strong> are tricky in Hungarian because they attach to the noun, but as a chunk — "Ez az enyém" (this is mine) — just learn it as one phrase first. Your child will naturally begin to extend the pattern.
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez az enyém, de kölcsön adom, ha kéred.</span>
+          <span class="en">This is mine, but I'll lend it to you if you ask.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Add ide szépen, kérlek — ez a tiéd lesz majd.</span>
+          <span class="en">Pass it here nicely please — then it'll be yours.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Bocsánat — nem akartam. Megbocsátasz?</span>
+          <span class="en">Sorry — I didn't mean to. Do you forgive me?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Osztozunk rajta — először te, aztán én.</span>
+          <span class="en">We're sharing it — you first, then me.</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — A Sharing Moment</div>
+        <div class="rp-scene">One toy, two people. Play out a gentle negotiation. This works best when it's a real object both of you actually want.</div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ez az enyém!<span class="rp-en">This is mine!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Add ide, kérlek! Kölcsön adom majd.<span class="rp-en">Give it to me please! I'll give it back.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Osztozunk. Légy kedves!<span class="rp-en">We're sharing. Be kind!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Rendben. Bocsánat.<span class="rp-en">Okay. Sorry.</span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -836,6 +1654,47 @@
         <div class="game-box">
           <div class="game-title">Why this matters linguistically</div>
           Consequence language is emotionally loaded — which means it gets remembered fast. "Elég!" said firmly once in context will stick in your memory better than 20 vocabulary drills. Use it authentically in real moments. Your child will also pick up on your consistency.
+        </div>
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Ha ezt még egyszer csinálod, akkor elmegyünk haza.</span>
+          <span class="en">If you do that one more time, we're going home.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Elég! Tedd vissza, és gyere ide!</span>
+          <span class="en">Enough! Put it back and come here!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Nyugodj le — lélegezz, aztán megbeszéljük.</span>
+          <span class="en">Calm down — breathe, then we'll talk about it.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Értem, hogy mérges vagy — de ez nem szabad.</span>
+          <span class="en">I understand that you're angry — but that's not allowed.</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Setting a Limit</div>
+        <div class="rp-scene">Practise this calmly before you need it in a real moment. Say the lines out loud — tone matters as much as words.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Abbahagyod! Ez nem szabad.<span class="rp-en">Stop that! That's not allowed.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Nyugodj le. Lélegezz.<span class="rp-en">Calm down. Breathe.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Rendben.<span class="rp-en">Okay.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Gyere, megbeszéljük. Értem.<span class="rp-en">Come, let's talk about it. I understand.</span></span>
         </div>
       </div>
     </div>
@@ -883,6 +1742,47 @@
           Commit to asking "Kérsz ebből?" before you put anything on your child's plate — every single meal. This one phrase said 3x a day = 90 repetitions a month. Say "Kérsz még?" before seconds. Let them answer "Igen, kérek" or point — both count.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Kérsz ebből? Finom, megkóstolod?</span>
+          <span class="en">Do you want some of this? It's delicious — will you try it?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Nem szeretem — kérhetek inkább kenyeret?</span>
+          <span class="en">I don't like it — can I have some bread instead?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Kérsz még, vagy elég volt?</span>
+          <span class="en">Do you want more, or was that enough?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Mit szeretnél inni — vizet vagy tejet?</span>
+          <span class="en">What would you like to drink — water or milk?</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Serving Lunch</div>
+        <div class="rp-scene">At the table. You're serving. Play this out with a real plate — even a snack works.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Kérsz ebből?<span class="rp-en">Do you want some of this?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Igen, kérek. / Nem kérek, köszönöm.<span class="rp-en">Yes please. / No thank you.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Finom?<span class="rp-en">Is it delicious?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Finom! / Nem szeretem.<span class="rp-en">Delicious! / I don't like it.</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -914,6 +1814,47 @@
       </div>
       <div class="tip-box">
         Use "Anya csinálta" when your partner made the food — it reinforces both the word for mum and the past tense as a chunk without needing to explain tense at all.
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Gyere, segíts nekem — megcsináljuk együtt!</span>
+          <span class="en">Come, help me — let's make it together!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Vacsorát készítek — húsz perc múlva kész lesz.</span>
+          <span class="en">I'm making dinner — it'll be ready in twenty minutes.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Apa csinálta ma az ebédet — köszönjük meg neki!</span>
+          <span class="en">Dad made lunch today — let's say thank you to him!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Mit eszünk vacsorára? Főzök valamit finomat!</span>
+          <span class="en">What are we having for dinner? I'll cook something delicious!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Making Food Together</div>
+        <div class="rp-scene">You're in the kitchen. Invite your child in. Even spreading butter on toast counts as "cooking together."</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Főzök! Ebédet készítek.<span class="rp-en">I'm cooking! I'm making lunch.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Segíts nekem! Megcsináljuk együtt!<span class="rp-en">Help me! Let's make it together!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Rendben!<span class="rp-en">Okay!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Kész! Ez az ebéd. Mi csináltuk!<span class="rp-en">Done! This is lunch. We made it!</span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -954,6 +1895,47 @@
 
       <div class="tip-box">
         After 4–6 weeks of consistent use, your child will prompt <em>you</em> if you forget to say something. That's the moment you know it's working — you've built a family language habit, not just a lesson.
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Gyertek enni — az étel az asztalon van!</span>
+          <span class="en">Come and eat — the food's on the table!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ülj le és egyél lassan — nem kell sietni.</span>
+          <span class="en">Sit down and eat slowly — there's no rush.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Megettél mindent? Szuper! Köszönöm az ételt.</span>
+          <span class="en">Did you eat everything? Great! Thank you for the food.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Felállhatok? — Persze, de előbb igyál vizet!</span>
+          <span class="en">May I get up? — Of course, but drink some water first!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The Full Mealtime Script</div>
+        <div class="rp-scene">Run through the complete mealtime in Hungarian from call to finish. Do this every day until it's automatic.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Gyertek enni! Ülj le!<span class="rp-en">Come and eat! Sit down!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Jó étvágyat!<span class="rp-en">Enjoy your meal!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Felállhatok?<span class="rp-en">May I get up?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Persze! Köszönöm az ételt.<span class="rp-en">Of course! Thank you for the food.</span></span>
+        </div>
       </div>
     </div>
   </div>
@@ -1006,6 +1988,47 @@
       <div class="tip-box">
         <strong>Pattern notice:</strong> You'll see lots of words ending in <em>-t</em> here (nadrágot, zoknit, pólót). In Hungarian, the direct object of a verb gets a <em>-t</em> ending. You don't need to know the rule — just notice that when you're telling someone to put something on, it sounds like the word has a little "t" on the end.
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Vedd fel a zoknit és a cipőt — aztán indulunk!</span>
+          <span class="en">Put on your socks and shoes — then we're off!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Hideg van, vedd fel a pulóvert és a kabátot is.</span>
+          <span class="en">It's cold, put on your jumper and your coat too.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Mit vegyél fel ma? — A kék pólót!</span>
+          <span class="en">What should you put on today? — The blue t-shirt!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Kész vagy? Nagyon jól nézel ki!</span>
+          <span class="en">Are you ready? You look great!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Getting Dressed</div>
+        <div class="rp-scene">Morning routine. Hand each item one at a time and say its name. After a week, pause and wait — see if they name it first.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Mit vegyél fel? A zoknit! (hand it over)<span class="rp-en">What should you put on? The socks!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">A nadrágot! A pólót!<span class="rp-en">The trousers! The t-shirt!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">És most? (hold up coat silently — wait)<span class="rp-en">And now? (wait for child to name it)</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Igen! A kabátot! Kész vagy!<span class="rp-en">Yes! The coat! You're ready!</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1042,6 +2065,47 @@
           Every time something goes on wrong — and it will, every day — use the phrase instead of fixing it silently. "Fordítva van. Fordítsd meg!" Then guide with your hands. The repetition of real mistakes makes these phrases stick within a week.
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Visszájára van — vedd le, és fordítsd meg!</span>
+          <span class="en">It's inside out — take it off and turn it around!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">A másik lábad — a bal, nem a jobb!</span>
+          <span class="en">The other leg — the left one, not the right!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Dugd be a kezed, aztán húzd fel rendesen!</span>
+          <span class="en">Put your hand through, then pull it up properly!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Majdnem! Még egy kicsit — így van, megvan!</span>
+          <span class="en">Nearly! Just a little more — that's it, got it!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The Wrong-Way-Round Morning</div>
+        <div class="rp-scene">Put something on inside out on purpose. Let your child spot it — or say it yourself. Use the real correction phrases.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Fordítva van. Fordítsd meg!<span class="rp-en">It's the wrong way round. Turn it around!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">(tries) Így van?<span class="rp-en">Like this?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Majdnem! Dugd be a kezed — húzd fel!<span class="rp-en">Nearly! Put your hand through — pull it up!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Így van! Megvan!<span class="rp-en">That's right! Got it!</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1075,6 +2139,47 @@
         <div class="game-box">
           <div class="game-title">Weather Check</div>
           Each morning, look out the window together and say either "Hideg van ma" or "Meleg van ma" before choosing clothes. A two-second ritual that builds weather vocabulary and gives the clothes choice a real-world context.
+        </div>
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Esik az eső, vedd fel a kabátot és a csizmát!</span>
+          <span class="en">It's raining — put on your coat and your boots!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Meleg van ma, nem kell pulóver — elég a póló.</span>
+          <span class="en">It's warm today, you don't need a jumper — a t-shirt is enough.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Melyiket vegyük fel — a pirosat vagy a kéket?</span>
+          <span class="en">Which one shall we put on — the red one or the blue one?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Nem, azt szeretném — az a kedvenc ruhám!</span>
+          <span class="en">No, I'd like that one — that's my favourite outfit!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The Morning Weather Check</div>
+        <div class="rp-scene">Stand at the window together. Look outside. Then make the clothes choice together in Hungarian.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Nézd! Hideg van ma. Esik az eső.<span class="rp-en">Look! It's cold today. It's raining.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Melyiket vegyük fel?<span class="rp-en">Which one shall we put on?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ezt akarom.<span class="rp-en">I want this one.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Rendben, vedd fel!<span class="rp-en">Okay, put it on!</span></span>
         </div>
       </div>
     </div>
@@ -1121,6 +2226,47 @@
           Hold up two books every bedtime: "Melyik könyvet olvassuk?" Let them point or say. Before you open it, say "Ez a könyv arról szól..." and try to describe it in one Hungarian word (the animal, the main character's name, etc). When it's done: "A könyv vége. Olvassunk még egyet?"
         </div>
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez egy hosszú könyv — de nagyon jó, megéri!</span>
+          <span class="en">This is a long book — but it's really good, it's worth it!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Melyik könyvet olvassuk — ezt vagy azt?</span>
+          <span class="en">Which book shall we read — this one or that one?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez a könyv arról szól, hogy egy kisfiú elvész az erdőben.</span>
+          <span class="en">This book is about a little boy who gets lost in the forest.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">A könyv vége. Tetszett? — Igen, nagyon tetszett!</span>
+          <span class="en">The book is finished. Did you like it? — Yes, I loved it!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Bedtime Book Pick</div>
+        <div class="rp-scene">Hold up two books at bedtime. Do the whole selection in Hungarian before you open a single page.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Melyik könyvet olvassuk?<span class="rp-en">Which book shall we read?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ezt! (points)<span class="rp-en">This one!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Ez a könyv arról szól… (one word is fine)<span class="rp-en">This book is about…</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">A könyv vége. Olvassunk még egyet?<span class="rp-en">The book's finished. Shall we read another one?</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1162,6 +2308,47 @@
       <div class="tip-box">
         Hungarian doesn't distinguish he/she — "ő" covers both. So "Mit csinál?" works for any character regardless of gender. One less thing to worry about!
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Ki ez? Ez egy kisfiú — mit csinál? Fut!</span>
+          <span class="en">Who is that? It's a little boy — what is he doing? He's running!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Nézd! Ez a kislány sír — miért sír, szerinted?</span>
+          <span class="en">Look! This little girl is crying — why is she crying, do you think?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ott van! Alszik — csendben legyünk!</span>
+          <span class="en">There he/she is! He's/She's sleeping — let's be quiet!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Mit csinál most? Eszik, aztán nevet — boldog!</span>
+          <span class="en">What is he/she doing now? Eating, then laughing — happy!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Point & Ask</div>
+        <div class="rp-scene">Open any picture book to any page. Point at characters and run this exchange — you ask, your child answers, then swap.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Ki ez? (point at character)<span class="rp-en">Who is that?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Ez egy kisfiú / kislány.<span class="rp-en">This is a little boy / girl.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Mit csinál?<span class="rp-en">What is he/she doing?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Fut. / Alszik. / Nevet.<span class="rp-en">Running. / Sleeping. / Laughing.</span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1195,6 +2382,47 @@
         <div class="game-box">
           <div class="game-title">One Question Per Book</div>
           Pick just one question per reading session to use consistently. Start with "Mit csinál?" pointing at pictures. Next week add "Ez vicces!" as a reaction. Build the script one phrase at a time — don't try to use the whole table at once.
+        </div>
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Mi történik itt? Szerinted mi lesz ezután?</span>
+          <span class="en">What's happening here? What do you think will happen next?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez vicces! Emlékszel, amikor ez történt?</span>
+          <span class="en">This is funny! Do you remember when this happened?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez a kedvencem az egész könyvben — neked melyik?</span>
+          <span class="en">This is my favourite part of the whole book — which is yours?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Ez szomorú rész — mit gondolsz, jól lesz minden?</span>
+          <span class="en">This is a sad part — do you think everything will be okay?</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Reacting to the Story</div>
+        <div class="rp-scene">During your next bedtime read, pick one moment to use a reaction phrase — funny, sad, or scary. Just one, said authentically.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Nézd! Mi történik itt?<span class="rp-en">Look! What's happening here?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">(answers in whatever language)<span class="rp-en"></span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Ez vicces! / Ez szomorú. / Ez félelmetes!<span class="rp-en">This is funny! / This is sad. / This is scary!</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Fordíts lapot!<span class="rp-en">Turn the page!</span></span>
         </div>
       </div>
     </div>
@@ -1243,6 +2471,47 @@
       <div class="tip-box">
         <strong>Pattern notice:</strong> You'll see <em>-tál / -tél</em> at the end of these questions — that's the past tense "you did" ending. You don't need to form it yourself yet, but you'll start recognising it everywhere once you notice it here.
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Mit csináltál ma az iskolában — tanultál valamit újat?</span>
+          <span class="en">What did you do at school today — did you learn anything new?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Kivel voltál ma? Játszottál a barátaiddal?</span>
+          <span class="en">Who were you with today? Did you play with your friends?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Mi volt a legjobb dolog, ami ma történt?</span>
+          <span class="en">What was the best thing that happened today?</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Történt valami érdekes? Mesélj!</span>
+          <span class="en">Did anything interesting happen? Tell me!</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The Walk Home</div>
+        <div class="rp-scene">On the actual walk from school or nursery. Two questions only — say them at the same point every day until they're automatic.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Mit csináltál ma?<span class="rp-en">What did you do today?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">(answers freely)<span class="rp-en"></span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Mi volt a legjobb?<span class="rp-en">What was the best part?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">(answers freely)<span class="rp-en"></span></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1276,6 +2545,47 @@
         <div class="game-box">
           <div class="game-title">Your Turn to Share</div>
           After asking your child about their day, tell them one thing you did — in Hungarian. Just one sentence. "Futottam ma." That's enough. It models that grown-ups share too, and it shows your child that Hungarian is a real language you're learning together, not just something you test them on.
+        </div>
+      </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Ma sokat dolgoztam, ezért most fáradt vagyok.</span>
+          <span class="en">I worked a lot today, so now I'm tired.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Futottam ma reggel — nagyon finom volt a levegő!</span>
+          <span class="en">I went for a run this morning — the air was so fresh!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Találkoztam egy barátommal, és sokat nevettünk.</span>
+          <span class="en">I met a friend and we laughed a lot.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Megtanultam egy új magyar szót — meg akarod hallani?</span>
+          <span class="en">I learnt a new Hungarian word — do you want to hear it?</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — Your Turn to Share</div>
+        <div class="rp-scene">After asking your child about their day, it's your turn. One sentence is enough. Say it simply and let your child respond.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Mit csináltál ma? (ask first)<span class="rp-en">What did you do today?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">(answers)<span class="rp-en"></span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Én is mesélök — futottam ma. / Dolgoztam. / Sétáltam.<span class="rp-en">I'll share too — I went for a run. / I worked. / I went for a walk.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Tanultam valamit — megtanultam: [new word]!<span class="rp-en">I learnt something — I learnt: [new word]!</span></span>
         </div>
       </div>
     </div>
@@ -1316,6 +2626,47 @@
       <div class="tip-box">
         End every day with "Szeretlek." It costs nothing to say, requires no grammar knowledge, and will be the most remembered phrase in this entire course.
       </div>
+
+      <div class="advanced-box">
+        <div class="adv-title">Advanced Sentences</div>
+        <div class="advanced-sentence">
+          <span class="hu">Milyen volt a napod? — Szórakoztató volt, sokat nevettünk!</span>
+          <span class="en">How was your day? — It was fun, we laughed a lot!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Fáradt vagyok, de boldog — jó napom volt.</span>
+          <span class="en">I'm tired, but happy — I had a good day.</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Büszke vagyok rád — nagyon jól csináltad ma!</span>
+          <span class="en">I'm proud of you — you did really well today!</span>
+        </div>
+        <div class="advanced-sentence">
+          <span class="hu">Rossz napom volt, de most itt vagyunk együtt — ez a legjobb.</span>
+          <span class="en">I had a bad day, but now we're here together — that's the best part.</span>
+        </div>
+      </div>
+
+      <div class="roleplay-box">
+        <div class="rp-title">Roleplay — The Family Check-In</div>
+        <div class="rp-scene">At dinner or before bed. Everyone answers — you, your partner, your child. Even one word counts.</div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Milyen volt a napod?<span class="rp-en">How was your day?</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker">Child</span>
+          <span class="rp-text">Jó! / Fáradt vagyok. / Szórakoztató volt.<span class="rp-en">Good! / I'm tired. / It was fun.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Büszke vagyok rád.<span class="rp-en">I'm proud of you.</span></span>
+        </div>
+        <div class="rp-line">
+          <span class="rp-speaker you">You</span>
+          <span class="rp-text">Szeretlek.<span class="rp-en">I love you.</span></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1326,19 +2677,357 @@
 
 </main>
 
+<!-- ── QUIZ OVERLAY ── -->
+<div id="quiz-overlay">
+  <!-- Top bar -->
+  <div class="quiz-topbar">
+    <button class="quiz-back" onclick="closeQuiz()">← Back to lesson</button>
+    <div class="quiz-title-bar" id="quiz-title-bar">Lesson 01 · Word Picker &amp; Sentence Builder</div>
+    <div class="quiz-counter" id="quiz-counter">1 / 6</div>
+  </div>
+  <!-- Progress bar -->
+  <div class="quiz-progress-track">
+    <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- Question screen -->
+  <div class="quiz-body" id="quiz-question-screen">
+
+    <!-- Word Picker panel -->
+    <div id="panel-picker" style="display:none; flex-direction:column; align-items:center; width:100%">
+      <div class="question-type-pill pill-picker">🔤 Word Picker</div>
+      <div class="quiz-prompt-label">What does this mean?</div>
+      <div class="quiz-word" id="quiz-word"></div>
+      <div class="quiz-pronunciation" id="quiz-pronun"></div>
+      <div class="quiz-grid" id="quiz-grid"></div>
+      <div class="quiz-feedback" id="quiz-feedback-picker"></div>
+    </div>
+
+    <!-- Sentence Builder panel -->
+    <div id="panel-sentence" style="display:none; flex-direction:column; align-items:center; width:100%">
+      <div class="question-type-pill pill-sentence">✏️ Sentence Builder</div>
+      <div class="quiz-prompt-label">Fill in the missing word</div>
+      <div class="sb-sentence-display" id="sb-sentence-display"></div>
+      <div class="sb-translation" id="sb-translation"></div>
+      <div class="sb-pool" id="sb-pool"></div>
+      <div class="quiz-feedback" id="quiz-feedback-sentence" style="margin-top:16px"></div>
+    </div>
+
+  </div>
+
+  <!-- Completion screen -->
+  <div id="quiz-complete">
+    <div class="complete-icon" id="complete-icon">🎉</div>
+    <div class="complete-score" id="complete-score">5<span>/6</span></div>
+    <div class="complete-label">correct answers</div>
+    <div class="complete-message" id="complete-message">
+      Great work — you're building real recognition. Try again to get a perfect score.
+    </div>
+    <div class="complete-actions">
+      <button class="btn-retry" onclick="startQuiz()">Try again</button>
+      <button class="btn-back-lesson" onclick="closeQuiz()">Back to lesson</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  function showTab(name, btn) {
+  // ── PAGE FUNCTIONS ──
+  function showTab(name) {
     document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
-    btn.classList.add('active');
+    event.target.classList.add('active');
   }
-
   function toggle(header) {
     const card = header.closest('.lesson-card');
     card.classList.toggle('open');
   }
-</script>
 
+  // ══════════════════════════════════════════
+  // ALL LESSON DATA
+  // ══════════════════════════════════════════
+  const LESSONS = {
+    '01': {
+      title: 'Lesson 01 — Going Somewhere',
+      pickers: [
+        { hu: 'Menjünk!',    pronun: 'Men-yünk',      en: "Let's go!",    emoji: '🚶' },
+        { hu: 'Megállj!',    pronun: 'Meg-áj',         en: 'Stop!',        emoji: '✋' },
+        { hu: 'Várj!',       pronun: 'Várj',           en: 'Wait!',        emoji: '⏳' },
+        { hu: 'Gyere ide!',  pronun: 'Dye-reh i-deh',  en: 'Come here!',   emoji: '👋' },
+        { hu: 'Piros lámpa', pronun: 'Pi-rosh lám-pa', en: 'Red light',    emoji: '🔴' },
+        { hu: 'Zöld lámpa',  pronun: 'Zöld lám-pa',   en: 'Green light',  emoji: '🟢' },
+      ],
+      sentences: [
+        { before: '',       after: '! A parkba megyünk.', translation: "___ ! We're going to the park.", correct: 'Menjünk', pool: ['Menjünk','Megállj','Várj'] },
+        { before: '',       after: ' a kezemet!',         translation: '___ my hand!',                  correct: 'Fogd',    pool: ['Fogd','Nézz','Gyere'] },
+        { before: 'Piros ', after: '.',                   translation: 'Red ___.',                      correct: 'lámpa',   pool: ['lámpa','körbe','ide'] },
+        { before: '',       after: ' körbe!',             translation: '___ around!',                   correct: 'Nézz',    pool: ['Nézz','Várj','Fogd'] },
+        { before: 'Zöld ',  after: '.',                   translation: 'Green ___.',                    correct: 'lámpa',   pool: ['lámpa','megyünk','körbe'] },
+      ],
+    },
+    '02': {
+      title: 'Lesson 02 — At the Playground',
+      pickers: [
+        { hu: 'Csúszdázzunk!', pronun: 'Chúz-dá-zunk',  en: "Let's go on the slide!", emoji: '🛝' },
+        { hu: 'Hintázzunk!',   pronun: 'Hin-táz-zunk',  en: "Let's swing!",           emoji: '🎠' },
+        { hu: 'Vigyázz!',      pronun: 'Vi-dyáz',       en: 'Be careful!',            emoji: '⚠️' },
+        { hu: 'Én tolom!',     pronun: 'Én to-lom',     en: "I'll push you!",          emoji: '🤸' },
+        { hu: 'Még egyszer!',  pronun: 'Még edy-ser',   en: 'One more time!',         emoji: '🔁' },
+        { hu: 'Fáj?',          pronun: 'Fáy',           en: 'Does it hurt?',          emoji: '🤕' },
+      ],
+      sentences: [
+        { before: '',        after: '! Én tolom.',           translation: "___ ! I'll push you.",       correct: 'Hintázzunk', pool: ['Hintázzunk','Csúszdázzunk','Menjünk'] },
+        { before: 'Én ',     after: '!',                     translation: "I'll ___ you!",              correct: 'tolom',      pool: ['tolom','tolod','látom'] },
+        { before: '',        after: '! Aztán menjünk haza.', translation: "___ ! Then let's go home.",  correct: 'Még egyszer',pool: ['Még egyszer','Elég','Vigyázz'] },
+        { before: '',        after: '? Nem baj.',            translation: '___ ? Never mind.',         correct: 'Fáj',        pool: ['Fáj','Elég','Menjünk'] },
+        { before: 'Menjünk ',after: '.',                     translation: "Let's go ___.",              correct: 'haza',       pool: ['haza','ide','fel'] },
+      ],
+    },
+    '03': {
+      title: 'Lesson 03 — At the Library',
+      pickers: [
+        { hu: 'Csend legyen!',          pronun: 'Chend le-dyen',            en: "Let's be quiet!",        emoji: '🤫' },
+        { hu: 'Melyik könyvet akarod?', pronun: 'Me-yik köny-vet o-ko-rod', en: 'Which book do you want?',emoji: '📚' },
+        { hu: 'Olvassunk együtt!',      pronun: 'Ol-vosh-shunk e-dyütt',    en: "Let's read together!",   emoji: '📖' },
+        { hu: 'Mi ez?',                 pronun: 'Mi ez',                    en: "What's this?",           emoji: '🤔' },
+        { hu: 'Tetszik?',               pronun: 'Tet-shik',                 en: 'Do you like it?',        emoji: '❤️' },
+        { hu: 'Vigyük haza.',           pronun: 'Vi-dyük ho-zo',            en: "Let's take it home.",    emoji: '🏠' },
+      ],
+      sentences: [
+        { before: '',         after: '! Melyik könyvet akarod?', translation: "___ ! Which book do you want?", correct: 'Csend legyen', pool: ['Csend legyen','Nézd meg','Mi ez'] },
+        { before: '',         after: ' együtt!',                  translation: "Let's read ___!",              correct: 'Olvassunk',    pool: ['Olvassunk','Menjünk','Vigyük'] },
+        { before: 'Mi ',      after: '?',                         translation: 'What ___ this?',               correct: 'ez',           pool: ['ez','az','ott'] },
+        { before: '',         after: '? Igen, tetszik.',          translation: '___ ? Yes, I like it.',        correct: 'Tetszik',      pool: ['Tetszik','Mi ez','Elég'] },
+        { before: 'Vigyük ',  after: '.',                         translation: "Let's take it ___.",           correct: 'haza',         pool: ['haza','ide','együtt'] },
+      ],
+    },
+    '04': {
+      title: 'Lesson 04 — School & Nursery Run',
+      pickers: [
+        { hu: 'Szia!',                  pronun: 'Si-ya',                       en: 'Hi! / Bye!',             emoji: '👋' },
+        { hu: 'Hamarosan jövök érted.', pronun: 'Ho-mo-ro-shon yö-vök ér-ted', en: "I'll come for you soon.", emoji: '🕐' },
+        { hu: 'Milyen napod volt?',     pronun: 'Mi-yen no-pod volt',           en: 'How was your day?',      emoji: '💬' },
+        { hu: 'Boldog vagyok.',         pronun: 'Bol-dog vo-dyok',              en: "I'm happy.",             emoji: '😊' },
+        { hu: 'Szomorú vagyok.',        pronun: 'So-mo-rú vo-dyok',             en: "I'm sad.",               emoji: '😢' },
+        { hu: 'Fáradt vagyok.',         pronun: 'Fá-rott vo-dyok',              en: "I'm tired.",             emoji: '😴' },
+      ],
+      sentences: [
+        { before: '',              after: ', viszontlátásra!',  translation: '___ , see you later!',    correct: 'Szia',   pool: ['Szia','Jó','Elég'] },
+        { before: '',              after: ' vagyok.',           translation: "I'm ___.",                 correct: 'Boldog', pool: ['Boldog','Szomorú','Fáradt'] },
+        { before: 'Fáradt ',       after: '.',                  translation: "I'm tired ___.",           correct: 'vagyok', pool: ['vagyok','voltam','legyen'] },
+        { before: 'Milyen napod ', after: '?',                  translation: 'How was your ___ ?',      correct: 'volt',   pool: ['volt','van','lesz'] },
+        { before: 'Gyere, menjünk ', after: '!',                translation: "Come on, let's go ___ !",  correct: 'haza',   pool: ['haza','ide','fel'] },
+      ],
+    },
+    '05': {
+      title: 'Lesson 05 — Meeting Friends & Family',
+      pickers: [
+        { hu: 'Nagyihoz megyünk.',      pronun: 'No-dyi-hoz me-dyünk',    en: "We're going to grandma's.", emoji: '👵' },
+        { hu: 'Ki jön ma?',            pronun: 'Ki yön mo',               en: "Who's coming today?",       emoji: '🤷' },
+        { hu: 'Hogy vagy?',            pronun: 'Hody vody',               en: 'How are you?',             emoji: '🙂' },
+        { hu: 'Jól vagyok, köszönöm.', pronun: 'Yól vo-dyok, kö-sö-nöm', en: "I'm well, thank you.",      emoji: '😌' },
+        { hu: 'Örülök, hogy látlak!',  pronun: 'Ö-rü-lök hody lát-lok',  en: "I'm glad to see you!",      emoji: '🤗' },
+        { hu: 'Viszontlátásra!',       pronun: 'Vi-sont-lá-tá-shro',     en: 'Goodbye!',                 emoji: '👋' },
+      ],
+      sentences: [
+        { before: '',              after: ' megyünk!',  translation: "We're going to ___!",   correct: 'Nagyihoz', pool: ['Nagyihoz','Haza','Parkba'] },
+        { before: '',              after: ' jön ma?',   translation: '___ is coming today?',  correct: 'Ki',       pool: ['Ki','Mi','Hol'] },
+        { before: 'Hogy ',         after: '?',          translation: 'How ___ you?',          correct: 'vagy',     pool: ['vagy','vagyok','van'] },
+        { before: 'Jól vagyok, ',  after: '.',          translation: "I'm well, ___ .",        correct: 'köszönöm', pool: ['köszönöm','tetszik','elég'] },
+        { before: 'Örülök, hogy ', after: '!',          translation: "I'm glad to ___ you!",   correct: 'látlak',   pool: ['látlak','tudlak','hallak'] },
+      ],
+    },
+  };
+
+  // ══════════════════════════════════════════
+  // QUIZ ENGINE
+  // ══════════════════════════════════════════
+  let questionQueue      = [];
+  let currentIndex       = 0;
+  let score              = 0;
+  let awaitingCorrection = false;
+  let activeLessonId     = null;
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function interleave(a, b) {
+    const sa = shuffle([...a]);
+    const sb = shuffle([...b]);
+    const result = [];
+    const len = Math.max(sa.length, sb.length);
+    for (let i = 0; i < len; i++) {
+      if (i < sa.length) result.push(sa[i]);
+      if (i < sb.length) result.push(sb[i]);
+    }
+    return result;
+  }
+
+  function openQuiz(lessonId) {
+    activeLessonId = lessonId;
+    document.getElementById('quiz-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    startQuiz();
+  }
+
+  function closeQuiz() {
+    document.getElementById('quiz-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function startQuiz() {
+    const lesson     = LESSONS[activeLessonId];
+    const pickerQs   = lesson.pickers.map(p  => ({ type: 'picker',   ...p }));
+    const sentenceQs = lesson.sentences.map(s => ({ type: 'sentence', ...s }));
+    questionQueue = interleave(pickerQs, sentenceQs);
+    currentIndex  = 0;
+    score         = 0;
+    document.getElementById('quiz-title-bar').textContent = lesson.title;
+    document.getElementById('quiz-complete').classList.remove('active');
+    const qs = document.getElementById('quiz-question-screen');
+    qs.style.display = 'flex';
+    qs.style.flexDirection = 'column';
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const total   = questionQueue.length;
+    const current = questionQueue[currentIndex];
+    awaitingCorrection = false;
+    document.getElementById('quiz-counter').textContent = (currentIndex + 1) + ' / ' + total;
+    document.getElementById('quiz-progress-fill').style.width = ((currentIndex / total) * 100) + '%';
+    if (current.type === 'picker') { showPanel('picker');   renderPicker(current);   }
+    else                            { showPanel('sentence'); renderSentence(current); }
+  }
+
+  function showPanel(which) {
+    document.getElementById('panel-picker').style.display   = which === 'picker'   ? 'flex' : 'none';
+    document.getElementById('panel-sentence').style.display = which === 'sentence' ? 'flex' : 'none';
+  }
+
+  function renderPicker(q) {
+    document.getElementById('quiz-word').textContent            = q.hu;
+    document.getElementById('quiz-pronun').textContent          = q.pronun;
+    document.getElementById('quiz-feedback-picker').textContent = '';
+    document.getElementById('quiz-feedback-picker').className   = 'quiz-feedback';
+    const pool        = LESSONS[activeLessonId].pickers;
+    const distractors = shuffle(pool.filter(p => p.hu !== q.hu)).slice(0, 3);
+    const options     = shuffle([{ ...q, isCorrect: true }, ...distractors.map(d => ({ ...d, isCorrect: false }))]);
+    const grid = document.getElementById('quiz-grid');
+    grid.innerHTML = '';
+    options.forEach(opt => {
+      const tile = document.createElement('button');
+      tile.className = 'quiz-tile';
+      tile.dataset.correct = opt.isCorrect;
+      tile.innerHTML = '<span class="tile-emoji">' + opt.emoji + '</span><span class="tile-label">' + opt.en + '</span>';
+      tile.addEventListener('click', () => handlePickerAnswer(tile, opt.isCorrect));
+      grid.appendChild(tile);
+    });
+  }
+
+  function handlePickerAnswer(tile, isCorrect) {
+    const grid     = document.getElementById('quiz-grid');
+    const feedback = document.getElementById('quiz-feedback-picker');
+    const tiles    = grid.querySelectorAll('.quiz-tile');
+    if (isCorrect && !awaitingCorrection) {
+      score++;
+      tile.classList.add('correct', 'locked');
+      tiles.forEach(t => { if (t !== tile) t.classList.add('locked'); });
+      feedback.textContent = '✓ Correct!'; feedback.className = 'quiz-feedback good';
+      setTimeout(advanceQuestion, 900);
+    } else if (isCorrect && awaitingCorrection) {
+      tile.classList.add('correct'); tile.classList.remove('highlight-correct');
+      tiles.forEach(t => t.classList.add('locked'));
+      feedback.textContent = '✓ Got it — moving on'; feedback.className = 'quiz-feedback good';
+      setTimeout(advanceQuestion, 800);
+    } else if (!isCorrect && !awaitingCorrection) {
+      tile.classList.add('wrong', 'locked');
+      feedback.textContent = '✗ Not quite — tap the correct answer'; feedback.className = 'quiz-feedback bad';
+      awaitingCorrection = true;
+      tiles.forEach(t => {
+        if (t.dataset.correct === 'true') t.classList.add('highlight-correct');
+        else if (t !== tile)               t.classList.add('locked');
+      });
+    }
+  }
+
+  function renderSentence(q) {
+    const feedback = document.getElementById('quiz-feedback-sentence');
+    feedback.textContent = ''; feedback.className = 'quiz-feedback';
+    document.getElementById('sb-sentence-display').innerHTML =
+      (q.before ? '<span>' + q.before + '</span>' : '') +
+      '<span class="sb-blank" id="sb-blank">&#8203;</span>' +
+      (q.after  ? '<span>' + q.after  + '</span>' : '');
+    document.getElementById('sb-translation').textContent = q.translation;
+    const pool = document.getElementById('sb-pool');
+    pool.innerHTML = '';
+    shuffle([...q.pool]).forEach(word => {
+      const chip = document.createElement('button');
+      chip.className = 'sb-chip';
+      chip.textContent = word;
+      chip.dataset.word    = word;
+      chip.dataset.correct = (word === q.correct);
+      chip.addEventListener('click', () => handleSentenceAnswer(chip, word === q.correct));
+      pool.appendChild(chip);
+    });
+  }
+
+  function handleSentenceAnswer(chip, isCorrect) {
+    const feedback = document.getElementById('quiz-feedback-sentence');
+    const blank    = document.getElementById('sb-blank');
+    const allChips = document.getElementById('sb-pool').querySelectorAll('.sb-chip');
+    if (isCorrect && !awaitingCorrection) {
+      score++;
+      blank.textContent = chip.dataset.word; blank.classList.add('correct-fill');
+      chip.classList.add('correct', 'locked');
+      allChips.forEach(c => { if (c !== chip) c.classList.add('locked'); });
+      feedback.textContent = '✓ Correct!'; feedback.className = 'quiz-feedback good';
+      setTimeout(advanceQuestion, 900);
+    } else if (isCorrect && awaitingCorrection) {
+      blank.textContent = chip.dataset.word;
+      blank.classList.remove('wrong-fill'); blank.classList.add('correct-fill');
+      chip.classList.add('correct'); chip.classList.remove('highlight-chip');
+      allChips.forEach(c => c.classList.add('locked'));
+      feedback.textContent = '✓ Got it — moving on'; feedback.className = 'quiz-feedback good';
+      setTimeout(advanceQuestion, 800);
+    } else if (!isCorrect && !awaitingCorrection) {
+      blank.textContent = chip.dataset.word; blank.classList.add('wrong-fill');
+      chip.classList.add('wrong', 'locked');
+      feedback.textContent = '✗ Not quite — tap the correct word'; feedback.className = 'quiz-feedback bad';
+      awaitingCorrection = true;
+      allChips.forEach(c => {
+        if (c.dataset.correct === 'true') c.classList.add('highlight-chip');
+        else if (c !== chip)               c.classList.add('locked');
+      });
+    }
+  }
+
+  function advanceQuestion() {
+    currentIndex++;
+    if (currentIndex >= questionQueue.length) showComplete();
+    else renderQuestion();
+  }
+
+  function showComplete() {
+    const total = questionQueue.length;
+    document.getElementById('quiz-progress-fill').style.width = '100%';
+    document.getElementById('quiz-counter').textContent = total + ' / ' + total;
+    document.getElementById('quiz-question-screen').style.display = 'none';
+    document.getElementById('quiz-complete').classList.add('active');
+    document.getElementById('complete-score').innerHTML = score + '<span>/' + total + '</span>';
+    document.getElementById('complete-icon').textContent = score === total ? '🏆' : score >= total * 0.7 ? '🎉' : '💪';
+    document.getElementById('complete-message').textContent = score === total
+      ? 'Perfect score! You know all ' + total + ' questions cold. Come back tomorrow to see if it sticks.'
+      : score >= total * 0.7
+      ? "Great work — you're building solid recognition. Try again to nail the ones that caught you out."
+      : 'Keep going — repetition is how this works. Every retry sharpens the pattern.';
+  }
+</script>
 </body>
 </html>

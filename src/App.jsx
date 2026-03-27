@@ -759,6 +759,7 @@ function QuizEngine({lesson,color,onFinish,statsApi}){
   const [ms,setMs]=useState({sel:null,matched:[],wrong:null});
   useEffect(()=>{statsApi.startTimer();},[]);
   const q=qs[qi];const total=qs.length;
+  const matchItems=useMemo(()=>{if(q.type!=="match")return[];return[...shuffle(q.pairs.map(p=>({text:p.hu,lang:"hu",key:p.hu}))),...shuffle(q.pairs.map(p=>({text:p.en,lang:"en",key:p.hu})))];},[qi]);
   const advance=(correct)=>{if(q.phrase)statsApi.recordPhrase(q.phrase.hu,correct);if(correct)setScore(s=>s+1);
     setTimeout(()=>{if(qi<total-1){setQi(i=>i+1);setAns(null);setTyped("");setMs({sel:null,matched:[],wrong:null});}
     else{statsApi.stopTimer();statsApi.recordSession(lesson.id,score+(correct?1:0),total);setAns("done");}},correct?600:1200);};
@@ -830,7 +831,7 @@ function QuizEngine({lesson,color,onFinish,statsApi}){
     {q.type==="match"&&<div>
       <div style={{fontSize:13,color:C.sub,textAlign:"center",marginBottom:14}}>Match Hungarian ↔ English</div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7}}>
-        {[...shuffle(q.pairs.map(p=>({text:p.hu,lang:"hu",key:p.hu}))),...shuffle(q.pairs.map(p=>({text:p.en,lang:"en",key:p.hu})))].map((item,i)=>{
+        {matchItems.map((item,i)=>{
           const matched=ms.matched.includes(item.key+item.lang);const sel=ms.sel&&ms.sel.text===item.text;const wr=ms.wrong===item.text;
           return <button key={i} disabled={matched} onClick={()=>{
             if(matched)return;if(!ms.sel){setMs({...ms,sel:item,wrong:null});return;}if(ms.sel.lang===item.lang){setMs({...ms,sel:item,wrong:null});return;}

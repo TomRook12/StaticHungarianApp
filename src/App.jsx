@@ -581,6 +581,68 @@ function generateQuestions(lesson,weakPhrases,count=15){
 // ─── STYLES ────────────────────────────────────────────────────────────────
 const C={bg:"#0F1117",card:"#161822",border:"#1E2030",text:"#E8E6E1",sub:"#7A7B8A",dim:"#555668",green:"#3A8F6E",red:"#D94A4A",amber:"#E8913A"};
 
+// ─── FEEDBACK MODAL ────────────────────────────────────────────────────────
+const FEEDBACK_CATEGORIES=[
+  {value:"wrong-translation",label:"Wrong translation",gh_label:"wrong-translation"},
+  {value:"wrong-pronunciation",label:"Wrong pronunciation",gh_label:"wrong-pronunciation"},
+  {value:"suggestion",label:"Suggestion",gh_label:"suggestion"},
+  {value:"bug",label:"Bug / Error",gh_label:"bug"},
+  {value:"other",label:"Other",gh_label:"question"},
+];
+
+function FeedbackModal({onClose,context}){
+  const [category,setCategory]=useState(FEEDBACK_CATEGORIES[0].value);
+  const [description,setDescription]=useState("");
+  const [status,setStatus]=useState("idle");
+
+  const submit=async()=>{
+    if(!description.trim())return;
+    setStatus("loading");
+    const cat=FEEDBACK_CATEGORIES.find(c=>c.value===category);
+    const title=`[Feedback] ${cat.label}: ${description.slice(0,50)}${description.length>50?"…":""}`;
+    const body=[`**Category:** ${cat.label}`,`**Context:** ${context||"General"}`,``,`**Description:**`,description.trim()].join("\n");
+    try{
+      const res=await fetch("https://api.github.com/repos/tomrook12/statichungarianapp/issues",{
+        method:"POST",
+        headers:{Authorization:`Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,"Content-Type":"application/json"},
+        body:JSON.stringify({title,body,labels:[cat.gh_label]}),
+      });
+      if(!res.ok)throw new Error();
+      setStatus("success");
+    }catch{setStatus("error");}
+  };
+
+  return <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.72)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:1000,padding:"0 0 20px"}}>
+    <div onClick={e=>e.stopPropagation()} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:20,padding:"24px 20px",width:"100%",maxWidth:440}}>
+      {status==="success"?<div style={{textAlign:"center",padding:"20px 0"}}>
+        <div style={{fontSize:40}}>✅</div>
+        <div style={{fontSize:18,fontWeight:800,color:C.text,marginTop:12}}>Feedback sent!</div>
+        <div style={{fontSize:13,color:C.sub,marginTop:6}}>A GitHub issue has been created. Thanks!</div>
+        <button onClick={onClose} style={{marginTop:20,padding:"12px 32px",borderRadius:12,background:`${C.green}20`,border:`1px solid ${C.green}40`,color:C.green,fontSize:14,fontWeight:700,cursor:"pointer"}}>Close</button>
+      </div>:<>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16}}>
+          <div style={{fontSize:16,fontWeight:800,color:C.text}}>Send Feedback</div>
+          <button onClick={onClose} style={{background:"none",border:"none",color:C.sub,fontSize:22,cursor:"pointer",padding:"0 4px",lineHeight:1}}>×</button>
+        </div>
+        {context&&<div style={{fontSize:11,color:C.dim,marginBottom:14,padding:"6px 10px",background:C.bg,borderRadius:8}}>Context: {context}</div>}
+        <div style={{fontSize:12,color:C.sub,marginBottom:6,fontWeight:600}}>Category</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:14}}>
+          {FEEDBACK_CATEGORIES.map(c=><button key={c.value} onClick={()=>setCategory(c.value)}
+            style={{padding:"6px 12px",borderRadius:20,border:`1.5px solid ${category===c.value?"#4A90D9":C.border}`,background:category===c.value?"#4A90D910":"transparent",color:category===c.value?"#4A90D9":C.sub,fontSize:12,fontWeight:700,cursor:"pointer"}}>{c.label}</button>)}
+        </div>
+        <div style={{fontSize:12,color:C.sub,marginBottom:6,fontWeight:600}}>Description</div>
+        <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="Describe the issue or suggestion..."
+          style={{width:"100%",minHeight:90,padding:"12px",borderRadius:12,border:`1.5px solid ${C.border}`,background:C.bg,color:C.text,fontSize:14,resize:"vertical",outline:"none",boxSizing:"border-box",fontFamily:"inherit"}}/>
+        {status==="error"&&<div style={{fontSize:12,color:C.red,marginTop:6}}>Failed to submit. Check your connection and try again.</div>}
+        <button onClick={submit} disabled={!description.trim()||status==="loading"}
+          style={{marginTop:12,width:"100%",padding:"13px",borderRadius:12,background:description.trim()?"#4A90D9":C.border,border:"none",color:"#fff",fontSize:14,fontWeight:700,cursor:description.trim()?"pointer":"default",opacity:status==="loading"?0.6:1}}>
+          {status==="loading"?"Sending…":"Send Feedback"}
+        </button>
+      </>}
+    </div>
+  </div>;
+}
+
 // ─── SMALL COMPONENTS ─────────────────────────────────────────────────────
 function Header({title,sub,onBack,right}){
   return <div style={{padding:"14px 16px 10px",display:"flex",alignItems:"center",gap:10,borderBottom:`1px solid ${C.border}`}}>
@@ -835,8 +897,16 @@ export default function App(){
   const [phaseId,setPhaseId]=useState(null);
   const [lessonId,setLessonId]=useState(null);
   const [showGoalSettings,setShowGoalSettings]=useState(false);
+  const [showFeedback,setShowFeedback]=useState(false);
   const statsApi=useStats();
   const focus=useMemo(()=>getDailyFocus(statsApi.stats),[statsApi.stats]);
+
+  const feedbackContext=useMemo(()=>{
+    if(screen==="lesson"&&lessonId){const l=LESSONS.find(x=>x.id===lessonId);return l?`Lesson ${lessonId}: ${l.title}`:"Lesson";}
+    if(screen==="phase"&&phaseId){const p=PHASES.find(x=>x.id===phaseId);return p?`Phase: ${p.title}`:"Phase";}
+    if(screen==="stats")return "Stats screen";
+    return "Home screen";
+  },[screen,lessonId,phaseId]);
 
   const goToLesson=(id)=>{const l=LESSONS.find(x=>x.id===id);if(l){setPhaseId(l.phase);setLessonId(id);setScreen("lesson");}};
 
@@ -844,6 +914,8 @@ export default function App(){
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 
     {showGoalSettings&&<GoalSettings goal={statsApi.stats.dailyGoal} onSet={statsApi.setDailyGoal} onClose={()=>setShowGoalSettings(false)}/>}
+    {showFeedback&&<FeedbackModal onClose={()=>setShowFeedback(false)} context={feedbackContext}/>}
+    <button onClick={()=>setShowFeedback(true)} title="Send feedback" style={{position:"fixed",bottom:24,right:16,width:48,height:48,borderRadius:24,background:"#4A90D9",border:"none",color:"#fff",fontSize:20,cursor:"pointer",boxShadow:"0 4px 16px rgba(74,144,217,0.4)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center"}}>💬</button>
 
     {screen==="home"&&<div>
       {/* Header with goal ring */}

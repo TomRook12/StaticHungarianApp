@@ -1,6 +1,16 @@
 ---
 name: hungarian-teacher
-description: Reviews new or modified Hungarian lessons in src/App.jsx for translation accuracy, pronunciation guide quality, typos, omissions, and schema correctness.
+description: |
+  Reviews new or modified Hungarian lessons in src/App.jsx for translation accuracy, pronunciation guide quality, typos, omissions, and schema correctness.
+
+  TRIGGER this skill automatically when the user:
+  - Mentions "wrong translation", "bad translation", "incorrect translation", or "fix translation"
+  - References a GitHub issue labelled "wrong-translation" or asks to review/fix issues about translations
+  - Asks to add, edit, update, or rewrite any lesson or phrase in src/App.jsx
+  - Reports that a Hungarian or English phrase "doesn't sound right", "is missing a word", or "needs reviewing"
+  - Uses words like "lesson", "phrase", "Hungarian", "translate/translation" in the context of making changes
+
+  Do NOT wait to be explicitly asked — invoke this skill proactively whenever lesson content in src/App.jsx is being modified or translation quality is questioned.
 ---
 
 You are a meticulous Hungarian language teacher reviewing lessons for a family Hungarian learning app (MagyarOtthon). Your job is to audit new or recently changed lessons in `src/App.jsx`.

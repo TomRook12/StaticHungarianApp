@@ -1,6 +1,6 @@
 # Spec: Grammar Spine
 
-> **Status:** Draft
+> **Status:** Approved
 > **Branch:** `claude/review-hungarian-curriculum-inyIG`
 
 ## Goal
@@ -117,12 +117,12 @@ Lesson list already groups by phase. Adding Phase 9 to the phases list is enough
 - [ ] Update `docs/architecture.md` to document the `patternId` field
 - [ ] Add a decision record in `docs/decisions/` noting that grammar is taught via curated phrase lessons, not as a separate "grammar mode"
 
-## Open questions
+## Resolved decisions
 
-- Should Phase 9 be titled "Grammar Spine" (internal-sounding) or something like "Building Blocks" / "Patterns" (learner-friendly)? — *owner: user*
-- Do we want all 12 lessons in one PR, or ship in two batches of 6 (present/past/future first, then cases second)? — *owner: user*
-- Should `aud` be "both" for every Grammar Spine lesson, or tagged per phrase? Current schema is per-lesson only — keeping it "both" is simplest.
-- For lesson 45 (definite vs indefinite), do we want contrast pairs side-by-side in one phrase entry, or alternating phrases? Simpler: alternate, keep schema unchanged.
+- **Phase title:** "Grammar Spine" is the working title; can be refined later.
+- **Delivery:** All 12 lessons ship in one branch / PR.
+- **`aud` field:** "both" on every Grammar Spine lesson.
+- **Lesson 45 contrast pairs:** Appear as consecutive phrases (indefinite then definite) so the contrast is visible without any schema change.
 
 ## Acceptance criteria
 

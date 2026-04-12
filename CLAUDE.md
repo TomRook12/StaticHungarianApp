@@ -38,3 +38,16 @@ A family Hungarian language learning PWA. The goal is natural, daily language us
 ```bash
 npm run deploy   # builds and pushes to gh-pages branch
 ```
+
+## Sub-agents
+
+Specialised read-only sub-agents live in `.claude/agents/`. Launch them via the `Agent` tool (`subagent_type: "<name>"`) when you need focused work without bloating the main context. They complement the existing skills in `.claude/skills/`.
+
+| Agent | When to use |
+|-------|-------------|
+| `lesson-scout` | Searching `LESSONS[]` for existing phrases, ids, phases, or patterns without reading all of `App.jsx` |
+| `spec-scout` | Reporting on `docs/specs/` status — "what's approved but unstarted?", "what ids does spec X reserve?" (read-only counterpart to the `spec-tracker` skill) |
+| `convention-reviewer` | Reviewing `git diff` against the hard rules in this file and `docs/conventions.md` before committing or pushing |
+| `quiz-engine-explorer` | Explaining or debugging `getDailyFocus`, `generateQuestions`, `TIME_TAGS`, and the six quiz types with file:line citations |
+
+All four are read-only. Translation review stays with the `hungarian-teacher` skill; spec-index rewrites stay with the `spec-tracker` skill; issue triage stays with the `issue-manager` skill.

@@ -1,7 +1,7 @@
 # Spec: Reasoning & Narrative — Phases 10 + 11
 
-> **Status:** Draft
-> **Branch:** `claude/review-hungarian-curriculum-inyIG`
+> **Status:** Complete
+> **Branch:** `claude/complete-specs-SZCay`
 
 ## Goal
 
@@ -33,29 +33,29 @@ CEFR B1 requires all of these. The paradigm-anchored lessons (Milestone 1a, ids 
 
 #### Phase 10 — Reasoning & Opinion (~6 lessons, ~48 phrases)
 
-- [ ] Lesson: **Because & So** — `mert`, `ezért`, `azért, mert`, `tehát`
-- [ ] Lesson: **I Think** — `szerintem`, `azt hiszem`, `úgy gondolom`, `úgy érzem`
-- [ ] Lesson: **If… Then** — `ha… akkor`, basic real conditionals ("if it rains, we stay home")
-- [ ] Lesson: **Agreeing & Disagreeing** — `egyetértek`, `nem értek egyet`, `igazad van`, `nem biztos`
-- [ ] Lesson: **Comparing Things** — `jobb, mint`, `ugyanolyan`, `inkább`, `kevésbé`
-- [ ] Lesson: **Explaining a Problem** — `az a baj, hogy`, `a probléma az, hogy`, `nem működik`
+- [x] Lesson: **Because & So** — `mert`, `ezért`, `azért, mert`, `tehát`
+- [x] Lesson: **I Think** — `szerintem`, `azt hiszem`, `úgy gondolom`, `úgy érzem`
+- [x] Lesson: **If… Then** — `ha… akkor`, basic real conditionals ("if it rains, we stay home")
+- [x] Lesson: **Agreeing & Disagreeing** — `egyetértek`, `nem értek egyet`, `igazad van`, `nem biztos`
+- [x] Lesson: **Comparing Things** — `jobb, mint`, `ugyanolyan`, `inkább`, `kevésbé`
+- [x] Lesson: **Explaining a Problem** — `az a baj, hogy`, `a probléma az, hogy`, `nem működik`
 
 #### Phase 11 — Telling Stories (~6 lessons, ~48 phrases)
 
-- [ ] Lesson: **What We Did Today** — past tense narrative using `ma`, `aztán`, `végül`
-- [ ] Lesson: **First, Then, After That** — sequencing connectors: `először`, `aztán`, `utána`, `végül`
-- [ ] Lesson: **What She/He Said** — reported speech: `azt mondta, hogy`, `megkérdezte, hogy`
-- [ ] Lesson: **When I Was Little** — extended past, childhood memories with `amikor… voltam`
-- [ ] Lesson: **Bedtime Story Retelling** — "what happened in the story?" vocabulary for narrative comprehension
-- [ ] Lesson: **The Funny Thing That Happened** — anecdotes, humour markers: `képzeld`, `tudod mit`, `és akkor`
+- [x] Lesson: **What We Did Today** — past tense narrative using `ma`, `aztán`, `végül`
+- [x] Lesson: **First, Then, After That** — sequencing connectors: `először`, `aztán`, `utána`, `végül`
+- [x] Lesson: **What She/He Said** — reported speech: `azt mondta, hogy`, `megkérdezte, hogy`
+- [x] Lesson: **When I Was Little** — extended past, childhood memories with `amikor… voltam`
+- [x] Lesson: **Bedtime Story Retelling** — "what happened in the story?" vocabulary for narrative comprehension
+- [x] Lesson: **The Funny Thing That Happened** — anecdotes, humour markers: `képzeld`, `tudod mit`, `és akkor`
 
 #### Infrastructure
 
-- [ ] Phase 10 and Phase 11 added to `PHASES` array with distinct emoji + color
-- [ ] All lessons follow existing schema: `{ id, phase, title, sub, aud, phrases[], tip, pat }`
-- [ ] All lessons include optional `patternId` field (introduced by the paradigm-anchored lessons 45–56)
-- [ ] `TIME_TAGS` updated: Reasoning lessons are time-agnostic; Story lessons boosted in `evening` (bedtime storytelling context)
-- [ ] `aud` set per lesson: Reasoning lessons → `"both"`, Story lessons → mix of `"kids"` and `"wife"`
+- [x] Phase 10 and Phase 11 added to `PHASES` array with distinct emoji + color
+- [x] All lessons follow existing schema: `{ id, phase, title, sub, aud, phrases[], tip, pat }`
+- [x] All lessons include optional `patternId` field (introduced by the paradigm-anchored lessons 45–56)
+- [x] `TIME_TAGS` updated: Reasoning lessons are time-agnostic; Story lessons boosted in `evening` (bedtime storytelling context)
+- [x] `aud` set per lesson: Reasoning lessons → `"both"`, Story lessons → mix of `"kids"` and `"wife"`
 
 ### Nice to have
 
@@ -127,13 +127,13 @@ Each phase adds ~100 distinct new words (connectors, abstract nouns, narrative v
 
 ## Implementation tasks
 
-- [ ] Add Phase 10 and Phase 11 to `PHASES` array
-- [ ] Draft 8 family-context phrases for each of the 12 lessons (96 phrases total)
-- [ ] Append lessons 57–68 to the `LESSONS` array with `patternId` fields
-- [ ] Update `TIME_TAGS.evening` to include Story lesson IDs (63–68)
-- [ ] Run `hungarian-teacher` skill on all new phrases
-- [ ] Verify `npm run build` succeeds
-- [ ] Update `docs/architecture.md` to reflect new phases
+- [x] Add Phase 10 and Phase 11 to `PHASES` array
+- [x] Draft 8 family-context phrases for each of the 12 lessons (96 phrases total)
+- [x] Append lessons 57–68 to the `LESSONS` array with `patternId` fields
+- [x] Update `TIME_TAGS.evening` to include Story lesson IDs (63–68)
+- [x] Run `hungarian-teacher` skill on all new phrases
+- [x] Verify `npm run build` succeeds
+- [x] Update `docs/architecture.md` to reflect new phases
 
 ## Open questions
 
@@ -142,9 +142,9 @@ Each phase adds ~100 distinct new words (connectors, abstract nouns, narrative v
 
 ## Acceptance criteria
 
-- [ ] 12 new lessons (ids 57–68) visible under Phase 10 and Phase 11 in the app
-- [ ] Each lesson has 8 phrases, `tip`, `pat`, and `patternId`
-- [ ] Story lessons appear in evening Daily Focus suggestions
-- [ ] All Hungarian content validated by `hungarian-teacher` skill
-- [ ] No regressions in existing lesson/quiz/stats flows
-- [ ] `npm run build` succeeds
+- [x] 12 new lessons (ids 57–68) visible under Phase 9 and Phase 10 in the app (renumbered: 9 = Reasoning, 10 = Stories)
+- [x] Each lesson has 8 phrases, `tip`, `pat`, and `patternId`
+- [x] Story lessons appear in evening Daily Focus suggestions
+- [x] All Hungarian content validated by `hungarian-teacher` skill
+- [x] No regressions in existing lesson/quiz/stats flows
+- [x] `npm run build` succeeds

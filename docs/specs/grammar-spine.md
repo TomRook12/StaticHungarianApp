@@ -109,15 +109,15 @@ Lesson list already groups by phase. Adding Phase 9 to the phases list is enough
 
 ## Implementation tasks
 
-- [ ] Add Phase 9 title to the phases list in `App.jsx`
-- [ ] Draft 8 family-context phrases for each of the 12 lessons
-- [ ] Add `patternId` to lesson objects 45–56
-- [ ] Append lessons 45–56 to the `LESSONS` array
-- [ ] Render multi-line `pat` content as preformatted text in the lesson view
-- [ ] Run `hungarian-teacher` skill on all new lessons
-- [ ] Verify `npm run build` succeeds
-- [ ] Update `docs/architecture.md` to document the `patternId` field
-- [ ] Add a decision record in `docs/decisions/` noting that grammar is taught via curated phrase lessons, not as a separate "grammar mode"
+- [x] Add Phase 9 title to the phases list in `App.jsx` _(Phase 9 subsequently dissolved — lessons 45–56 moved into everyday phases 1–8)_
+- [x] Draft 8 family-context phrases for each of the 12 lessons
+- [x] Add `patternId` to lesson objects 45–56
+- [x] Append lessons 45–56 to the `LESSONS` array
+- [x] Render multi-line `pat` content as preformatted text in the lesson view
+- [x] Run `hungarian-teacher` skill on all new lessons
+- [x] Verify `npm run build` succeeds
+- [x] Update `docs/architecture.md` to document the `patternId` field
+- [x] Add a decision record in `docs/decisions/` noting that grammar is taught via curated phrase lessons, not as a separate "grammar mode"
 
 ## Resolved decisions
 

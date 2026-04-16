@@ -1,7 +1,7 @@
 # Spec: Engine Depth — Story Cards, Listening, Shadowing & Quiz Enhancements
 
-> **Status:** Approved
-> **Branch:** `claude/engine-depth-spec-oepEI`
+> **Status:** Complete
+> **Branch:** `claude/complete-engine-depth-spec-sKJyg`
 
 ## Goal
 
@@ -189,7 +189,7 @@ No persistence. Recording is discarded when navigating away.
 ### Listening Mode
 - [x] Add "Listen" tab to `PhraseView`
 - [x] Implement auto-advance logic with play/pause/replay controls
-- [ ] Test with `speechSynthesis` `hu-HU` voice availability
+- [x] Test with `speechSynthesis` `hu-HU` voice availability — `useHuVoiceAvailable()` hook added; ListenView shows amber warning when no `hu-HU` voice is detected
 
 ### Grammar-Pattern Quiz
 - [x] Implement `getPatternPhrases(patternId)` utility
@@ -197,24 +197,24 @@ No persistence. Recording is discarded when navigating away.
 - [x] Generate cross-lesson quiz using existing `generateQuestions`
 
 ### Reconstruct Quiz (nice-to-have)
-- [ ] Add `reconstruct` question type to `generateQuestions`
-- [ ] Build tile-drag/tap UI for reordering words
-- [ ] Integrate into quiz flow and scoring
+- [x] Add `reconstruct` question type to `generateQuestions`
+- [x] Build tile-drag/tap UI for reordering words
+- [x] Integrate into quiz flow and scoring
 
 ### Shadowing (nice-to-have)
-- [ ] Add "Shadow" button to phrase view
-- [ ] Implement `MediaRecorder` capture + playback
-- [ ] Handle mic permission denial gracefully
+- [x] Add "Shadow" button to phrase view
+- [x] Implement `MediaRecorder` capture + playback
+- [x] Handle mic permission denial gracefully — `ShadowBtn` hidden when `navigator.mediaDevices` unavailable; shows "Mic denied" on permission refusal
 
 ### Weekly Theme (nice-to-have)
-- [ ] Implement week-number → patternId rotation
-- [ ] Add theme banner to home screen
-- [ ] Link to "Drill Pattern" quiz
+- [x] Implement week-number → patternId rotation — `getWeeklyPattern()` utility cycles through all `patternId` values by ISO week
+- [x] Add theme banner to home screen
+- [x] Link to "Drill Pattern" quiz — banner "Drill →" button navigates to lesson with `initialMode="drill"`
 
 ### General
 - [x] Verify `npm run build` succeeds
 - [x] Update `docs/architecture.md` with new components and data structures
-- [ ] Add decision record if App.jsx exceeds ~1,500 lines (evaluate splitting) — **App.jsx is now 1,937 lines; decision needed**
+- [x] Add decision record if App.jsx exceeds ~1,500 lines — see `docs/decisions/002-keep-single-file.md`
 
 ## Open questions
 
@@ -225,12 +225,12 @@ No persistence. Recording is discarded when navigating away.
 
 ## Acceptance criteria
 
-- [ ] 10+ stories visible in a "Stories" section (gated on lesson progress)
-- [ ] Tapping a story sentence reveals its English translation
-- [ ] "Read aloud" plays full story via TTS
-- [ ] Listening mode auto-plays phrases with timed English reveal
-- [ ] "Drill this pattern" button appears on lessons with a `patternId` and generates a cross-lesson quiz
-- [ ] (If implemented) Reconstruct quiz type works: tiles can be reordered, correct order scores a point
-- [ ] (If implemented) Shadow mode records and plays back user audio
-- [ ] No regressions in existing flows
-- [ ] `npm run build` succeeds
+- [x] 10+ stories visible in a "Stories" section (gated on lesson progress)
+- [x] Tapping a story sentence reveals its English translation
+- [x] "Read aloud" plays full story via TTS
+- [x] Listening mode auto-plays phrases with timed English reveal
+- [x] "Drill this pattern" button appears on lessons with a `patternId` and generates a cross-lesson quiz
+- [x] Reconstruct quiz type works: tiles can be reordered, correct order scores a point
+- [x] Shadow mode records and plays back user audio
+- [x] No regressions in existing flows
+- [x] `npm run build` succeeds

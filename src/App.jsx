@@ -1145,6 +1145,12 @@ const STORIES=[
 // ─── UTILITIES ─────────────────────────────────────────────────────────────
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function normalize(s){return s.replace(/[!?.,:;'"¡¿…]/g,"").toLowerCase().trim();}
+function getWeeklyPattern(){
+  const ids=[...new Set(LESSONS.filter(l=>l.patternId).map(l=>l.patternId))];
+  if(!ids.length)return null;
+  const weekNum=Math.floor(Date.now()/(7*24*60*60*1000));
+  return ids[weekNum%ids.length];
+}
 
 // ─── DAILY FOCUS ENGINE ───────────────────────────────────────────────────
 function getDailyFocus(stats){
@@ -1360,18 +1366,27 @@ function genType(p){return{type:"type",prompt:p.en,answer:p.hu,pr:p.pr,phrase:p}
 function genTF(p,all){const t=Math.random()>0.5;const shown=t?p.en:shuffle(all.filter(x=>x.en!==p.en))[0]?.en||p.en;return{type:"tf",prompt:p.hu,promptPr:p.pr,shown,answer:t,phrase:p};}
 function genFill(p){const w=p.hu.split(" ");if(w.length<2)return genMC_EnToHu(p,LESSONS.flatMap(l=>l.phrases));const gi=Math.floor(Math.random()*w.length);return{type:"fill",prompt:p.en,display:w.map((x,i)=>i===gi?"____":x).join(" "),answer:w[gi],fullHu:p.hu,pr:p.pr,phrase:p};}
 function genMatch(phrases){const s=shuffle(phrases).slice(0,4);return{type:"match",pairs:s.map(p=>({hu:p.hu,en:p.en})),phrase:s[0]};}
+function genReconstruct(p){
+  const words=p.hu.split(" ");
+  if(words.length<3||words.length>7)return null;
+  const tiles=[];
+  for(const w of words){const m=w.match(/^(.*?)([.,!?…]+)$/);if(m&&m[1]){tiles.push(m[1]);tiles.push(m[2]);}else tiles.push(w);}
+  if(tiles.length<3)return null;
+  return{type:"reconstruct",en:p.en,tiles:shuffle([...tiles]),correctTiles:tiles,phrase:p};
+}
 
 function generateQuestions(lesson,weakPhrases,count=15){
   const all=LESSONS.flatMap(l=>l.phrases);
   let pool=[...lesson.phrases];
   if(weakPhrases.length>0)pool=[...pool,...weakPhrases,...weakPhrases];
-  const qs=[];const types=["mc_en_hu","mc_hu_en","type","tf","fill","match"];
+  const qs=[];const types=["mc_en_hu","mc_hu_en","type","tf","fill","match","reconstruct"];
   for(let t of types){if(qs.length>=count)break;const p=pool[Math.floor(Math.random()*pool.length)];
     if(t==="mc_en_hu")qs.push(genMC_EnToHu(p,all));else if(t==="mc_hu_en")qs.push(genMC_HuToEn(p,all));
     else if(t==="type")qs.push(genType(p));else if(t==="tf")qs.push(genTF(p,all));
     else if(t==="fill")qs.push(genFill(p));else if(t==="match"&&lesson.phrases.length>=4)qs.push(genMatch(lesson.phrases));
+    else if(t==="reconstruct"){const r=genReconstruct(p);if(r)qs.push(r);}
   }
-  while(qs.length<count){const p=pool[Math.floor(Math.random()*pool.length)];const t=types[Math.floor(Math.random()*(types.length-1))];
+  while(qs.length<count){const p=pool[Math.floor(Math.random()*pool.length)];const t=types[Math.floor(Math.random()*(types.length-2))];
     if(t==="mc_en_hu")qs.push(genMC_EnToHu(p,all));else if(t==="mc_hu_en")qs.push(genMC_HuToEn(p,all));
     else if(t==="type")qs.push(genType(p));else if(t==="tf")qs.push(genTF(p,all));else if(t==="fill")qs.push(genFill(p));
   }
@@ -1385,6 +1400,17 @@ const C={bg:"#0F1117",card:"#161822",border:"#1E2030",text:"#E8E6E1",sub:"#7A7B8
 // ─── SPEECH UTILITY ──────────────────────────────────────────────────────
 function speakHu(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="hu-HU";u.rate=0.85;window.speechSynthesis.speak(u);}
 function SpeakBtn({text,color,size=18}){return <button onClick={e=>{e.stopPropagation();speakHu(text);}} title="Hear pronunciation" style={{background:"none",border:"none",cursor:"pointer",fontSize:size,padding:"2px 4px",color:color||C.sub,lineHeight:1,flexShrink:0}}>🔊</button>;}
+function useHuVoiceAvailable(){
+  const [avail,setAvail]=useState(null);
+  useEffect(()=>{
+    if(!window.speechSynthesis){setAvail(false);return;}
+    const check=()=>{const vs=window.speechSynthesis.getVoices();if(vs.length===0)return;setAvail(vs.some(v=>v.lang.startsWith("hu")));};
+    check();
+    window.speechSynthesis.addEventListener("voiceschanged",check);
+    return()=>window.speechSynthesis.removeEventListener("voiceschanged",check);
+  },[]);
+  return avail;
+}
 
 // ─── FEEDBACK MODAL ────────────────────────────────────────────────────────
 const FEEDBACK_CATEGORIES=[
@@ -1578,13 +1604,14 @@ function QuizEngine({lesson,color,onFinish,statsApi}){
   const [qs]=useState(()=>generateQuestions(lesson,weak,15));
   const [qi,setQi]=useState(0);const [score,setScore]=useState(0);const [ans,setAns]=useState(null);const [typed,setTyped]=useState("");
   const [ms,setMs]=useState({sel:null,matched:[],wrong:null});
+  const [reconPlaced,setReconPlaced]=useState([]);
   useEffect(()=>{statsApi.startTimer();},[]);
   useEffect(()=>{ if(q.type==="mc_hu_en"||q.type==="tf")speakHu(q.prompt); else if(q.type==="fill")speakHu(q.phrase.hu); },[qi]);
   useEffect(()=>{ if(ans!==null&&q.type==="type")speakHu(q.answer); },[ans]);
   const q=qs[qi];const total=qs.length;
   const matchItems=useMemo(()=>{if(q.type!=="match")return[];return[...shuffle(q.pairs.map(p=>({text:p.hu,lang:"hu",key:p.hu}))),...shuffle(q.pairs.map(p=>({text:p.en,lang:"en",key:p.hu})))];},[qi]);
   const advance=(correct)=>{if(q.phrase)statsApi.recordPhrase(q.phrase.hu,correct);if(correct)setScore(s=>s+1);};
-  const goNext=()=>{if(qi<total-1){setQi(i=>i+1);setAns(null);setTyped("");setMs({sel:null,matched:[],wrong:null});}
+  const goNext=()=>{if(qi<total-1){setQi(i=>i+1);setAns(null);setTyped("");setMs({sel:null,matched:[],wrong:null});setReconPlaced([]);}
     else{statsApi.stopTimer();statsApi.recordSession(lesson.id,score,total);setAns("done");}};
 
   if(ans==="done"){return <div style={{padding:"40px 20px",textAlign:"center"}}>
@@ -1596,7 +1623,7 @@ function QuizEngine({lesson,color,onFinish,statsApi}){
       <button onClick={()=>{setQi(0);setScore(0);setAns(null);setTyped("");statsApi.startTimer();}} style={{padding:"12px 24px",borderRadius:12,background:`${color}18`,border:`1px solid ${color}35`,color,fontSize:14,fontWeight:700,cursor:"pointer"}}>Retry</button>
     </div></div>;}
 
-  const label={mc_en_hu:"Pick the Hungarian",mc_hu_en:"Pick the English",type:"Type the Hungarian",tf:"True or false?",fill:"Fill the gap",match:"Match pairs"}[q.type];
+  const label={mc_en_hu:"Pick the Hungarian",mc_hu_en:"Pick the English",type:"Type the Hungarian",tf:"True or false?",fill:"Fill the gap",match:"Match pairs",reconstruct:"Put in order"}[q.type];
 
   const mcBtn=(opt,i,isAns,isSel)=>{let st=null;if(ans!==null){if(isAns)st="correct";else if(isSel)st="wrong";}
     return <button key={i} disabled={ans!==null} onClick={()=>{if(q.type==="mc_en_hu")speakHu(q.answer);setAns(opt);advance(isAns);}}
@@ -1666,18 +1693,77 @@ function QuizEngine({lesson,color,onFinish,statsApi}){
         })}
       </div>
     </div>}
+    {q.type==="reconstruct"&&<div>
+      <div style={{fontSize:13,color:C.sub,textAlign:"center"}}>Put the words in order:</div>
+      <div style={{fontSize:15,fontWeight:700,color:C.text,textAlign:"center",margin:"8px 0 14px"}}>{q.en}</div>
+      <div style={{minHeight:44,padding:"8px",borderRadius:11,border:`2px solid ${ans!==null?(ans==="recon_correct"?C.green:C.red):color+"60"}`,background:C.card,display:"flex",flexWrap:"wrap",gap:6,marginBottom:10,alignItems:"center"}}>
+        {reconPlaced.length===0?<span style={{fontSize:12,color:C.dim,padding:"2px 4px"}}>tap tiles below to build the sentence</span>:
+          reconPlaced.map((ti,pos)=><button key={pos} disabled={ans!==null} onClick={()=>setReconPlaced(p=>p.filter((_,j)=>j!==pos))}
+            style={{padding:"6px 10px",borderRadius:8,border:`1.5px solid ${color}60`,background:`${color}15`,color:C.text,fontSize:14,fontWeight:700,cursor:ans?"default":"pointer"}}>{q.tiles[ti]}</button>)}
+      </div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
+        {q.tiles.map((tile,ti)=>reconPlaced.includes(ti)?null:
+          <button key={ti} disabled={ans!==null} onClick={()=>setReconPlaced(p=>[...p,ti])}
+            style={{padding:"6px 10px",borderRadius:8,border:`1.5px solid ${C.border}`,background:C.card,color:C.text,fontSize:14,fontWeight:700,cursor:ans?"default":"pointer"}}>{tile}</button>)}
+      </div>
+      {ans===null&&reconPlaced.length===q.tiles.length&&<button onClick={()=>{const placed=reconPlaced.map(i=>q.tiles[i]);const correct=JSON.stringify(placed)===JSON.stringify(q.correctTiles);advance(correct);setAns(correct?"recon_correct":"recon_wrong");speakHu(q.phrase.hu);}}
+        style={{width:"100%",padding:"12px",borderRadius:12,background:`${color}18`,border:`1px solid ${color}35`,color,fontSize:14,fontWeight:700,cursor:"pointer"}}>Check</button>}
+      {ans!==null&&ans!=="recon_correct"&&ans!=="recon_wrong"?null:ans!==null&&<div style={{textAlign:"center",fontSize:13,fontWeight:600,color:ans==="recon_correct"?"#5FD4A0":"#FF8888",marginBottom:6}}>{ans==="recon_correct"?"✓ Correct!":"✗ "+q.correctTiles.join(" ")}</div>}
+    </div>}
     </div>
     {ans!==null&&<button onClick={goNext} style={{width:"100%",padding:"14px",borderRadius:14,background:`${color}18`,border:`1px solid ${color}35`,color,fontSize:15,fontWeight:700,cursor:"pointer",marginTop:16}}>{qi<total-1?"Next →":"Finish"}</button>}
   </div>;
 }
 
 // ─── PHRASE & FLASH VIEWS ─────────────────────────────────────────────────
+function ShadowBtn({phrase,color}){
+  const [st,setSt]=useState("idle");
+  const [recUrl,setRecUrl]=useState(null);
+  if(!navigator.mediaDevices)return null;
+  const handleShadow=async()=>{
+    if(st!=="idle")return;
+    let stream;
+    try{stream=await navigator.mediaDevices.getUserMedia({audio:true});}
+    catch{setSt("denied");setTimeout(()=>setSt("idle"),2000);return;}
+    setSt("playing");
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(phrase.hu);
+    u.lang="hu-HU";u.rate=0.85;
+    const t0=Date.now();
+    u.onend=()=>{
+      const dur=Math.max(1000,Date.now()-t0);
+      setSt("recording");
+      const recorder=new MediaRecorder(stream);
+      const chunks=[];
+      recorder.ondataavailable=e=>chunks.push(e.data);
+      recorder.onstop=()=>{
+        const blob=new Blob(chunks,{type:"audio/webm"});
+        setRecUrl(URL.createObjectURL(blob));
+        stream.getTracks().forEach(t=>t.stop());
+        setSt("done");
+      };
+      recorder.start();
+      setTimeout(()=>recorder.stop(),dur);
+    };
+    window.speechSynthesis.speak(u);
+  };
+  if(st==="idle")return <button onClick={handleShadow} title="Shadow this phrase" style={{background:"none",border:"none",cursor:"pointer",fontSize:16,padding:"2px 4px",color:color||C.sub,lineHeight:1,flexShrink:0}}>🎙</button>;
+  if(st==="playing")return <span style={{fontSize:10,color:C.sub,flexShrink:0}}>Listen…</span>;
+  if(st==="recording")return <span style={{fontSize:10,color:C.red,flexShrink:0}}>Rec…</span>;
+  if(st==="denied")return <span style={{fontSize:10,color:C.dim,flexShrink:0}}>Mic denied</span>;
+  return <span style={{display:"flex",gap:3,alignItems:"center",flexShrink:0}}>
+    <button onClick={()=>speakHu(phrase.hu)} title="Model" style={{background:"none",border:"none",cursor:"pointer",fontSize:14,padding:"1px 3px",color:color,lineHeight:1}}>🔊</button>
+    <button onClick={()=>new Audio(recUrl).play()} title="Your recording" style={{background:"none",border:"none",cursor:"pointer",fontSize:14,padding:"1px 3px",color:color,lineHeight:1}}>🎤</button>
+    <button onClick={()=>{setRecUrl(null);setSt("idle");}} title="Clear" style={{background:"none",border:"none",cursor:"pointer",fontSize:12,padding:"1px 3px",color:C.dim,lineHeight:1}}>✕</button>
+  </span>;
+}
+
 function PhraseView({lesson,color}){const [exp,setExp]=useState(null);
   return <div style={{padding:"0 16px 80px"}}>
     {lesson.tip&&<div style={{background:`${color}10`,border:`1px solid ${color}22`,borderRadius:12,padding:"10px 12px",margin:"10px 0",fontSize:12,color:"#C8C7D0",lineHeight:1.5}}><span style={{fontWeight:800,color}}>Tip: </span>{lesson.tip}</div>}
     {lesson.pat&&<div style={{background:"#1A1428",border:"1px solid #2D2548",borderRadius:12,padding:"10px 12px",margin:"6px 0",fontSize:12,color:"#B8A8D8",lineHeight:1.5,whiteSpace:"pre-wrap"}}><span style={{fontWeight:800,color:"#A78BFA"}}>Pattern: </span>{lesson.pat}</div>}
     {lesson.phrases.map((p,i)=><div key={i} style={{background:C.card,borderRadius:11,padding:"11px 13px",marginBottom:5,border:`1px solid ${C.border}`,cursor:"pointer"}} onClick={()=>setExp(exp===i?null:i)}>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><div style={{fontSize:16,fontWeight:700,color:C.text}}>{p.hu}</div><SpeakBtn text={p.hu} color={color}/></div>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><div style={{fontSize:16,fontWeight:700,color:C.text}}>{p.hu}</div><span style={{display:"flex",gap:4,alignItems:"center"}}><SpeakBtn text={p.hu} color={color}/><ShadowBtn phrase={p} color={color}/></span></div>
       {exp===i?<><div style={{fontSize:12,color:C.dim,marginTop:2,fontStyle:"italic"}}>{p.pr}</div><div style={{fontSize:13,color:C.sub,marginTop:3}}>{p.en}</div></>
       :<div style={{fontSize:10,color:C.dim,marginTop:1}}>tap to reveal</div>}
     </div>)}
@@ -1707,6 +1793,7 @@ function FlashView({lesson,color}){const [dir,setDir]=useState("hu");const [card
   </div>;}
 
 function ListenView({lesson,color}){
+  const huVoice=useHuVoiceAvailable();
   const [idx,setIdx]=useState(0);
   const [playing,setPlaying]=useState(false);
   const [revealed,setRevealed]=useState(false);
@@ -1743,6 +1830,7 @@ function ListenView({lesson,color}){
   },[playing,idx,startPhrase]);
   const skip=()=>{clearTimeout(timerRef.current);if(window.speechSynthesis)window.speechSynthesis.cancel();setIdx(i=>(i+1)%phrases.length);setRevealed(false);};
   return <div style={{padding:"20px 16px",display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+    {huVoice===false&&<div style={{width:"100%",maxWidth:320,padding:"8px 12px",borderRadius:10,background:`${C.amber}15`,border:`1px solid ${C.amber}40`,fontSize:12,color:C.amber,textAlign:"center"}}>No Hungarian voice found — audio may sound incorrect. Install a hu-HU voice in your device settings for best results.</div>}
     <div style={{fontSize:12,color:C.sub}}>{idx+1}/{phrases.length}</div>
     <div style={{width:"100%",maxWidth:320,minHeight:160,borderRadius:16,padding:"26px 20px",background:C.card,border:`2px solid ${color}38`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",gap:8}}>
       <div style={{fontSize:20,fontWeight:800,color:C.text}}>{phrase.hu}</div>
@@ -1816,10 +1904,10 @@ function ReviewDueQuiz({onBack,statsApi}){
 }
 
 // ─── LESSON VIEW ──────────────────────────────────────────────────────────
-function LessonView({lessonId,onBack,statsApi}){
+function LessonView({lessonId,onBack,statsApi,initialMode}){
   const lesson=LESSONS.find(l=>l.id===lessonId);
   const phase=PHASES.find(p=>p.id===lesson.phase);
-  const [mode,setMode]=useState("phrases");
+  const [mode,setMode]=useState(initialMode||"phrases");
   const color=phase.color;
   const sc=statsApi.stats.lessonScores[lessonId];
   const tabs=useMemo(()=>{const t=["phrases","flashcards","quiz","listen"];if(lesson.patternId)t.push("drill");return t;},[lesson.patternId]);
@@ -1844,11 +1932,14 @@ export default function App(){
   const [phaseId,setPhaseId]=useState(null);
   const [lessonId,setLessonId]=useState(null);
   const [storyId,setStoryId]=useState(null);
+  const [lessonMode,setLessonMode]=useState("phrases");
   const [showGoalSettings,setShowGoalSettings]=useState(false);
   const [showFeedback,setShowFeedback]=useState(false);
   const statsApi=useStats();
   const focus=useMemo(()=>getDailyFocus(statsApi.stats),[statsApi.stats]);
   const duePhrases=useMemo(()=>getDuePhrases(statsApi.stats),[statsApi.stats]);
+  const weeklyPatternId=useMemo(()=>getWeeklyPattern(),[]);
+  const weeklyLesson=useMemo(()=>weeklyPatternId?LESSONS.find(l=>l.patternId===weeklyPatternId):null,[weeklyPatternId]);
 
   const feedbackContext=useMemo(()=>{
     if(screen==="lesson"&&lessonId){const l=LESSONS.find(x=>x.id===lessonId);return l?`Lesson ${lessonId}: ${l.title}`:"Lesson";}
@@ -1857,7 +1948,7 @@ export default function App(){
     return "Home screen";
   },[screen,lessonId,phaseId]);
 
-  const goToLesson=(id)=>{const l=LESSONS.find(x=>x.id===id);if(l){setPhaseId(l.phase);setLessonId(id);setScreen("lesson");}};
+  const goToLesson=(id,mode="phrases")=>{const l=LESSONS.find(x=>x.id===id);if(l){setPhaseId(l.phase);setLessonId(id);setLessonMode(mode);setScreen("lesson");}};
 
   return <div style={{fontFamily:"'Nunito',sans-serif",background:C.bg,color:C.text,minHeight:"100vh",maxWidth:480,margin:"0 auto",position:"relative"}}>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -1878,6 +1969,16 @@ export default function App(){
 
       {/* Review Due */}
       <ReviewDueCard dueCount={duePhrases.length} onStart={()=>setScreen("review-due")}/>
+
+      {/* Weekly Pattern */}
+      {weeklyLesson&&<div style={{margin:"0 16px 10px",padding:"10px 14px",borderRadius:12,background:`${C.amber}10`,border:`1px solid ${C.amber}30`,display:"flex",alignItems:"center",gap:10}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:10,fontWeight:700,color:C.amber,textTransform:"uppercase",letterSpacing:0.5}}>This week's pattern</div>
+          <div style={{fontSize:13,fontWeight:700,color:C.text,marginTop:1}}>{weeklyLesson.title}</div>
+          <div style={{fontSize:11,color:C.sub}}>{weeklyPatternId}</div>
+        </div>
+        <button onClick={()=>goToLesson(weeklyLesson.id,"drill")} style={{padding:"7px 13px",borderRadius:10,background:`${C.amber}20`,border:`1px solid ${C.amber}40`,color:C.amber,fontSize:12,fontWeight:700,cursor:"pointer",flexShrink:0}}>Drill →</button>
+      </div>}
 
       {/* Quick actions */}
       <div style={{padding:"0 16px",marginBottom:12,display:"flex",gap:8}}>
@@ -1930,7 +2031,7 @@ export default function App(){
         </div>;})}
     </div>}
 
-    {screen==="lesson"&&<LessonView lessonId={lessonId} onBack={()=>setScreen("phase")} statsApi={statsApi}/>}
+    {screen==="lesson"&&<LessonView lessonId={lessonId} onBack={()=>setScreen("phase")} statsApi={statsApi} initialMode={lessonMode}/>}
     {screen==="story"&&<StoryView storyId={storyId} onBack={()=>setScreen("home")}/>}
     {screen==="review-due"&&<ReviewDueQuiz onBack={()=>setScreen("home")} statsApi={statsApi}/>}
   </div>;
